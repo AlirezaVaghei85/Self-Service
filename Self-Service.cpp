@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 class Student
@@ -15,7 +16,7 @@ public:
     Student();
     void print();
     void reserve_meal(Meal);
-    bool cancel_reservation(Rezervation);
+    bool cancel_reservation(Reservation);
 
     int getUser_id();
     string getStudent_id();
@@ -40,8 +41,29 @@ void Student::print()
          << "\nActivate: " << is_active;
 }
 
-class Rezervation
+class Reservation
 {
+private:
+    int reservation_id;
+    Student Student;
+    DiningHall dHall;
+    Meal meal;
+    enum status
+    {
+        SUCCEESS,
+        CANCELLED,
+        FAILED
+    };
+    time_t created_at;
+
+public:
+    Reservation();
+    void print();
+    bool cancel();
+
+    int getReservation_id();
+
+    void setReservation_id(int);
 };
 
 class Meal
