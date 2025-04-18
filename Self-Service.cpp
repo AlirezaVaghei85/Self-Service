@@ -30,6 +30,16 @@ public:
     void setBalance(float);
 };
 
+void Student::print()
+{
+    cout << "\nUser ID:" << user_id
+         << "\nStudent ID: " << student_id
+         << "\nName: " << name
+         << "\nEmail: " << email
+         << "\nBalance: " << balance
+         << "\nActivate: " << is_active;
+}
+
 class Rezervation
 {
 };
