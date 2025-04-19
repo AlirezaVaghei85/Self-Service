@@ -94,6 +94,25 @@ public:
 
 class DiningHall
 {
+private:
+    int hall_id;
+    string name;
+    string address;
+    int capacity;
+
+private:
+    DiningHall();
+    void print();
+
+    int getHall_id();
+    string getName();
+    string getAddress();
+    int getCapacity();
+
+    void setHall_id(int);
+    void setName(string);
+    void setAddress(string);
+    void setCapacity(int);
 };
 
 int main()
