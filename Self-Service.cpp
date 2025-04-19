@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <vector>
 using namespace std;
 
 class Student
@@ -68,6 +69,27 @@ public:
 
 class Meal
 {
+private:
+    int meal_id;
+    string name;
+    float price;
+    enum meal_type
+    {
+    };
+    vector<meal_type> side_items = {};
+
+public:
+    Meal();
+    void print();
+    bool cancel();
+
+    int getMeal_id();
+    string getName();
+    float getPrice();
+
+    void setMeal_id(int);
+    void setName(string);
+    void setPrice(float);
 };
 
 class DiningHall
