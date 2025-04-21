@@ -76,11 +76,11 @@ public:
     void reserve_meal(Meal);
     bool cancel_reservation(Reservation);
 
-    int getUser_id();
-    string getStudent_id();
-    string getName();
-    string getEmail();
-    float getBalance();
+    int getUser_id() { return user_id; }
+    string getStudent_id() { return student_id; }
+    string getName() { return name; }
+    string getEmail() { return email; }
+    float getBalance() { return balance; }
 
     void setUser_id(int);
     void setStudent_id(string);
