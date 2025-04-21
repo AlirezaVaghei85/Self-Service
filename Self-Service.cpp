@@ -3,6 +3,37 @@
 #include <vector>
 using namespace std;
 
+class Meal
+{
+private:
+    int meal_id;
+    string name;
+    float price;
+    enum meal_type
+    {
+        chicken_rice,
+        kebab,
+        pizza
+    };
+    vector<meal_type> side_items =
+        {
+
+    };
+
+public:
+    Meal();
+    void print();
+    bool cancel();
+
+    int getMeal_id();
+    string getName();
+    float getPrice();
+
+    void setMeal_id(int);
+    void setName(string);
+    void setPrice(float);
+};
+
 class Student
 {
 private:
@@ -42,6 +73,11 @@ void Student::print()
          << "\nActivate: " << is_active;
 }
 
+void Student::reserve_meal(Meal M)
+{
+    balance -= M.getPrice();
+}
+
 class Reservation
 {
 private:
@@ -65,31 +101,6 @@ public:
     int getReservation_id();
 
     void setReservation_id(int);
-};
-
-class Meal
-{
-private:
-    int meal_id;
-    string name;
-    float price;
-    enum meal_type
-    {
-    };
-    vector<meal_type> side_items = {};
-
-public:
-    Meal();
-    void print();
-    bool cancel();
-
-    int getMeal_id();
-    string getName();
-    float getPrice();
-
-    void setMeal_id(int);
-    void setName(string);
-    void setPrice(float);
 };
 
 class DiningHall
