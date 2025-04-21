@@ -34,6 +34,32 @@ public:
     void setPrice(float);
 };
 
+class Reservation
+{
+private:
+    int reservation_id;
+    Student Student;
+    DiningHall dHall;
+    Meal meal;
+    enum status
+    {
+        SUCCEESS,
+        CANCELLED,
+        FAILED
+    };
+    time_t created_at;
+
+public:
+    Reservation();
+    void print();
+    bool cancel();
+
+    int getReservation_id();
+    Meal getMeal();
+
+    void setReservation_id(int);
+};
+
 class Student
 {
 private:
@@ -78,30 +104,13 @@ void Student::reserve_meal(Meal M)
     balance -= M.getPrice();
 }
 
-class Reservation
+bool Student::cancel_reservation(Reservation R)
 {
-private:
-    int reservation_id;
-    Student Student;
-    DiningHall dHall;
-    Meal meal;
-    enum status
-    {
-        SUCCEESS,
-        CANCELLED,
-        FAILED
-    };
-    time_t created_at;
+    Meal M = R.getMeal();
+    balance += M.getPrice();
 
-public:
-    Reservation();
-    void print();
-    bool cancel();
-
-    int getReservation_id();
-
-    void setReservation_id(int);
-};
+    R.cancel();
+}
 
 class DiningHall
 {
