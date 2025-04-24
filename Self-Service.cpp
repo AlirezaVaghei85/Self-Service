@@ -198,10 +198,10 @@ private:
     string getAddress() { return address; }
     int getCapacity() { return capacity; }
 
-    void setHall_id(int);
-    void setName(string);
-    void setAddress(string);
-    void setCapacity(int);
+    void setHall_id(int i) { hall_id = i; }
+    void setName(string n) { name = n; }
+    void setAddress(string a) { address = a; }
+    void setCapacity(int c) { capacity = c; }
 };
 
 void DiningHall::print()
