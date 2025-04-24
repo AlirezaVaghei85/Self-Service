@@ -28,9 +28,9 @@ public:
     string getName() { return name; }
     float getPrice() { return price; }
 
-    void setMeal_id(int);
-    void setName(string);
-    void setPrice(float);
+    void setMeal_id(int i) { meal_id = i; }
+    void setName(string n) { name = n; }
+    void setPrice(float p) { price = p; }
 };
 
 void Meal::print()
