@@ -56,10 +56,35 @@ public:
     bool cancel();
 
     int getReservation_id();
-    Meal getMeal();
 
     void setReservation_id(int);
 };
+
+void Reservation::print()
+{
+    cout << "\nReservation ID: " << reservation_id
+         << "\nReservation Status: ";
+    switch (status)
+    {
+    case SUCCEESS:
+        cout << "SUCCEESS";
+        break;
+    case CANCELLED:
+        cout << "CANCELLED";
+        break;
+    case FAILED:
+        cout << "FAILED";
+        break;
+    default:
+        break;
+    }
+    cout << "\nStudent Information: ";
+    Student.print();
+    cout << "\nMeal information: ";
+    meal.print();
+    cout << "\nDining Hall Information: ";
+    dHall.print();
+}
 
 class Student
 {
