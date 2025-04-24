@@ -193,10 +193,10 @@ private:
     DiningHall();
     void print();
 
-    int getHall_id();
-    string getName();
-    string getAddress();
-    int getCapacity();
+    int getHall_id() { return hall_id; }
+    string getName() { return name; }
+    string getAddress() { return address; }
+    int getCapacity() { return capacity; }
 
     void setHall_id(int);
     void setName(string);
