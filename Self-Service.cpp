@@ -55,6 +55,11 @@ void Meal::print()
     }
 }
 
+bool Meal::cancel()
+{
+    cout << "\nMeal Cancelled";
+}
+
 class Reservation
 {
 private:
