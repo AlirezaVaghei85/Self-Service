@@ -48,6 +48,7 @@ private:
         CANCELLED,
         FAILED
     };
+    status res_status;
     time_t created_at;
 
 public:
@@ -64,7 +65,7 @@ void Reservation::print()
 {
     cout << "\nReservation ID: " << reservation_id
          << "\nReservation Status: ";
-    switch (status)
+    switch (res_status)
     {
     case SUCCEESS:
         cout << "SUCCEESS";
@@ -84,6 +85,13 @@ void Reservation::print()
     meal.print();
     cout << "\nDining Hall Information: ";
     dHall.print();
+}
+
+bool Reservation::cancel()
+{
+    res_status = CANCELLED;
+    cout << "\nReservation Cancelled";
+    return true;
 }
 
 class Student
