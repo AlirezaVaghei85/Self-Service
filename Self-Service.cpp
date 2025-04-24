@@ -204,6 +204,14 @@ private:
     void setCapacity(int);
 };
 
+void DiningHall::print()
+{
+    cout << "\nDining Hall ID: " << hall_id
+         << "\nDining Hall Name: " << name
+         << "\nDining Hall Address: " << address
+         << "\nDining Hall Capacity: " << capacity;
+}
+
 int main()
 {
     return 0;
