@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+#include <string.h>
 using namespace std;
 
 class Meal
@@ -84,9 +85,9 @@ public:
 
     void setUser_id(int);
     void setStudent_id(string);
-    void setName(string);
-    void setEmail(string);
-    void setBalance(float);
+    void setName(string n) { name = n; }
+    void setEmail(char[]);
+    void setBalance(float b) { balance = b; }
 };
 
 void Student::print()
@@ -110,6 +111,16 @@ bool Student::cancel_reservation(Reservation R)
     balance += M.getPrice();
 
     R.cancel();
+}
+
+void Student::setEmail(char e[])
+{
+    char *p;
+    p = strstr(e, "@gamil.com");
+    if (p = "@gmail.com")
+    {
+        email = e;
+    }
 }
 
 class DiningHall
