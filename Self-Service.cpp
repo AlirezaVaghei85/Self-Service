@@ -24,9 +24,9 @@ public:
     void print();
     bool cancel();
 
-    int getMeal_id();
-    string getName();
-    float getPrice();
+    int getMeal_id() { return meal_id; }
+    string getName() { return name; }
+    float getPrice() { return price; }
 
     void setMeal_id(int);
     void setName(string);
