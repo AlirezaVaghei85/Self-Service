@@ -16,10 +16,8 @@ private:
         kebab,
         pizza
     };
-    vector<meal_type> side_items =
-        {
-
-    };
+    meal_type meal;
+    vector<meal_type> side_items;
 
 public:
     Meal();
@@ -34,6 +32,28 @@ public:
     void setName(string);
     void setPrice(float);
 };
+
+void Meal::print()
+{
+    cout << "\nMeal ID: " << meal_id
+         << "\nMeal Name: " << name
+         << "\nMeal Price: " << price
+         << "\nMeal Type: ";
+    switch (meal)
+    {
+    case chicken_rice:
+        cout << chicken_rice;
+        break;
+    case kebab:
+        cout << kebab;
+        break;
+    case pizza:
+        cout << pizza;
+        break;
+    default:
+        break;
+    }
+}
 
 class Reservation
 {
@@ -56,9 +76,9 @@ public:
     void print();
     bool cancel();
 
-    int getReservation_id();
+    int getReservation_id() { return reservation_id; }
 
-    void setReservation_id(int);
+    void setReservation_id(int i) { reservation_id = i; }
 };
 
 void Reservation::print()
