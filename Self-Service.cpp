@@ -12,9 +12,9 @@ private:
     float price;
     enum meal_type
     {
-        chicken_rice,
-        kebab,
-        pizza
+        Breakefast,
+        Lunch,
+        Dinner
     };
     meal_type meal;
     vector<meal_type> side_items;
@@ -41,14 +41,14 @@ void Meal::print()
          << "\nMeal Type: ";
     switch (meal)
     {
-    case chicken_rice:
-        cout << chicken_rice;
+    case Breakefast:
+        cout << "Breakefast";
         break;
-    case kebab:
-        cout << kebab;
+    case Lunch:
+        cout << "Lunch";
         break;
-    case pizza:
-        cout << pizza;
+    case Dinner:
+        cout << "Dinner";
         break;
     default:
         break;
