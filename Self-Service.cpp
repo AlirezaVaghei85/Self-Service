@@ -4,6 +4,11 @@
 #include <string.h>
 using namespace std;
 
+class Student;
+class DiningHall;
+class Reservation;
+class Meal;
+
 class Meal
 {
 private:
@@ -60,63 +65,35 @@ bool Meal::cancel()
     cout << "\nMeal Cancelled";
 }
 
-class Reservation
+class DiningHall
 {
 private:
-    int reservation_id;
-    Student Student;
-    DiningHall dHall;
-    Meal meal;
-    enum status
-    {
-        SUCCEESS,
-        CANCELLED,
-        FAILED
-    };
-    status res_status;
-    time_t created_at;
+    int hall_id;
+    string name;
+    string address;
+    int capacity;
 
 public:
-    Reservation();
+    DiningHall();
     void print();
-    bool cancel();
 
-    int getReservation_id() { return reservation_id; }
+    int getHall_id() { return hall_id; }
+    string getName() { return name; }
+    string getAddress() { return address; }
+    int getCapacity() { return capacity; }
 
-    void setReservation_id(int i) { reservation_id = i; }
+    void setHall_id(int i) { hall_id = i; }
+    void setName(string n) { name = n; }
+    void setAddress(string a) { address = a; }
+    void setCapacity(int c) { capacity = c; }
 };
 
-void Reservation::print()
+void DiningHall::print()
 {
-    cout << "\nReservation ID: " << reservation_id
-         << "\nReservation Status: ";
-    switch (res_status)
-    {
-    case SUCCEESS:
-        cout << "SUCCEESS";
-        break;
-    case CANCELLED:
-        cout << "CANCELLED";
-        break;
-    case FAILED:
-        cout << "FAILED";
-        break;
-    default:
-        break;
-    }
-    cout << "\nStudent Information: ";
-    Student.print();
-    cout << "\nMeal information: ";
-    meal.print();
-    cout << "\nDining Hall Information: ";
-    dHall.print();
-}
-
-bool Reservation::cancel()
-{
-    res_status = CANCELLED;
-    cout << "\nReservation Cancelled";
-    return true;
+    cout << "\nDining Hall ID: " << hall_id
+         << "\nDining Hall Name: " << name
+         << "\nDining Hall Address: " << address
+         << "\nDining Hall Capacity: " << capacity;
 }
 
 class Student
@@ -181,35 +158,63 @@ void Student::setEmail(char e[])
     }
 }
 
-class DiningHall
+class Reservation
 {
 private:
-    int hall_id;
-    string name;
-    string address;
-    int capacity;
+    int reservation_id;
+    Student Student;
+    DiningHall dHall;
+    Meal meal;
+    enum status
+    {
+        SUCCEESS,
+        CANCELLED,
+        FAILED
+    };
+    status res_status;
+    time_t created_at;
 
-private:
-    DiningHall();
+public:
+    Reservation();
     void print();
+    bool cancel();
 
-    int getHall_id() { return hall_id; }
-    string getName() { return name; }
-    string getAddress() { return address; }
-    int getCapacity() { return capacity; }
+    int getReservation_id() { return reservation_id; }
 
-    void setHall_id(int i) { hall_id = i; }
-    void setName(string n) { name = n; }
-    void setAddress(string a) { address = a; }
-    void setCapacity(int c) { capacity = c; }
+    void setReservation_id(int i) { reservation_id = i; }
 };
 
-void DiningHall::print()
+void Reservation::print()
 {
-    cout << "\nDining Hall ID: " << hall_id
-         << "\nDining Hall Name: " << name
-         << "\nDining Hall Address: " << address
-         << "\nDining Hall Capacity: " << capacity;
+    cout << "\nReservation ID: " << reservation_id
+         << "\nReservation Status: ";
+    switch (res_status)
+    {
+    case SUCCEESS:
+        cout << "SUCCEESS";
+        break;
+    case CANCELLED:
+        cout << "CANCELLED";
+        break;
+    case FAILED:
+        cout << "FAILED";
+        break;
+    default:
+        break;
+    }
+    cout << "\nStudent Information: ";
+    Student.print();
+    cout << "\nMeal information: ";
+    meal.print();
+    cout << "\nDining Hall Information: ";
+    dHall.print();
+}
+
+bool Reservation::cancel()
+{
+    res_status = CANCELLED;
+    cout << "\nReservation Cancelled";
+    return true;
 }
 
 int main()
