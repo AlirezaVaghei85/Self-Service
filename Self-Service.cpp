@@ -110,7 +110,7 @@ public:
     Student();
     void print();
     void reserve_meal(Meal);
-    bool cancel_reservation(Reservation);
+    bool cancel_reservation(Reservation *);
 
     int getUser_id() { return user_id; }
     string getStudent_id() { return student_id; }
@@ -140,12 +140,12 @@ void Student::reserve_meal(Meal M)
     balance -= M.getPrice();
 }
 
-bool Student::cancel_reservation(Reservation R)
+bool Student::cancel_reservation(Reservation *R)
 {
-    Meal M = R.getMeal();
+    Meal M = R->getMeal();
     balance += M.getPrice();
 
-    R.cancel();
+    R->cancel();
 }
 
 void Student::setEmail(char e[])
@@ -180,6 +180,7 @@ public:
     bool cancel();
 
     int getReservation_id() { return reservation_id; }
+    Meal getMeal() { return meal; }
 
     void setReservation_id(int i) { reservation_id = i; }
 };
