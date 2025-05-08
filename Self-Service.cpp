@@ -86,6 +86,7 @@ public:
     int getMeal_id() { return mealID; }
     string getName() { return name; }
     float getPrice() { return price; }
+    MealType getMealType() { return mealType; }
 
     void setMeal_id(int i) { mealID = i; }
     void setName(string n) { name = n; }
