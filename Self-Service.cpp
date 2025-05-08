@@ -53,39 +53,51 @@ public:
 class Meal
 {
 private:
-    int meal_id;
+    int mealID;
     string name;
     float price;
-    enum meal_type
+    enum MealType
     {
         Breakefast,
         Lunch,
         Dinner
     };
-    meal_type meal;
-    vector<meal_type> side_items;
+    enum ReserveDay
+    {
+        Saturday,
+        Sunday,
+        Monday,
+        Tueseday,
+        Wednesday,
+        Thursday,
+        Friday
+    };
+    ReserveDay reserveday;
+    bool isActive;
+    MealType mealType;
+    vector<string> sideItems;
 
 public:
     Meal();
     void print();
     bool cancel();
 
-    int getMeal_id() { return meal_id; }
+    int getMeal_id() { return mealID; }
     string getName() { return name; }
     float getPrice() { return price; }
 
-    void setMeal_id(int i) { meal_id = i; }
+    void setMeal_id(int i) { mealID = i; }
     void setName(string n) { name = n; }
     void setPrice(float p) { price = p; }
 };
 
 void Meal::print()
 {
-    cout << "\nMeal ID: " << meal_id
+    cout << "\nMeal ID: " << mealID
          << "\nMeal Name: " << name
          << "\nMeal Price: " << price
          << "\nMeal Type: ";
-    switch (meal)
+    switch (mealType)
     {
     case Breakefast:
         cout << "Breakefast";
@@ -109,7 +121,7 @@ bool Meal::cancel()
 class DiningHall
 {
 private:
-    int hall_id;
+    int hallID;
     string name;
     string address;
     int capacity;
@@ -118,12 +130,12 @@ public:
     DiningHall();
     void print();
 
-    int getHall_id() { return hall_id; }
+    int getHall_id() { return hallID; }
     string getName() { return name; }
     string getAddress() { return address; }
     int getCapacity() { return capacity; }
 
-    void setHall_id(int i) { hall_id = i; }
+    void setHall_id(int i) { hallID = i; }
     void setName(string n) { name = n; }
     void setAddress(string a) { address = a; }
     void setCapacity(int c) { capacity = c; }
@@ -131,13 +143,13 @@ public:
 
 void DiningHall::print()
 {
-    cout << "\nDining Hall ID: " << hall_id
+    cout << "\nDining Hall ID: " << hallID
          << "\nDining Hall Name: " << name
          << "\nDining Hall Address: " << address
          << "\nDining Hall Capacity: " << capacity;
 }
 
-class Student
+class Student : public User
 {
 private:
     int user_id;
@@ -151,7 +163,8 @@ private:
 
 public:
     Student();
-    void print();
+    void print() const;
+    void getType();
     void reserve_meal(Meal);
     bool cancel_reservation(Reservation *);
     bool isActive() { return isActive; }
@@ -174,7 +187,7 @@ public:
     void setBalance(float b) { balance = b; }
 };
 
-void Student::print()
+void Student::print() const
 {
     cout << "\nUser ID:" << user_id
          << "\nStudent ID: " << studentID
