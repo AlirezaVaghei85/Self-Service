@@ -154,6 +154,7 @@ public:
     void print();
     void reserve_meal(Meal);
     bool cancel_reservation(Reservation *);
+    bool isActive() { return isActive; }
     vector<Reservation> getReserves();
 
     int getUser_id() { return user_id; }
@@ -164,7 +165,7 @@ public:
     float getBalance() { return balance; }
 
     void setUser_id(int);
-    void setStudent_id(string);
+    void setStudentID(string);
     void setName(string n) { name = n; }
     void setPhone(string p) { phone = p; }
     void setEmail(char[]);
