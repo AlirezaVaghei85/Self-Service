@@ -252,6 +252,7 @@ public:
 
     int getReservation_id() { return reservationID; }
     Meal getMeal() { return *meal; }
+    RStatus getStatus() { return status; }
 
     void setReservation_id(int i) { reservationID = i; }
 };
