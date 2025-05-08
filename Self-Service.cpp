@@ -46,6 +46,8 @@ class Admin : public User
 {
 private:
 public:
+    void print() const;
+    void getType();
 };
 
 class Meal
@@ -139,27 +141,32 @@ class Student
 {
 private:
     int user_id;
-    string student_id;
+    string studentID;
     string name;
+    string phone;
     string email;
     float balance;
-    bool is_active;
+    bool isActive;
+    vector<Reservation> reserves;
 
 public:
     Student();
     void print();
     void reserve_meal(Meal);
     bool cancel_reservation(Reservation *);
+    vector<Reservation> getReserves();
 
     int getUser_id() { return user_id; }
-    string getStudent_id() { return student_id; }
+    string getStudentID() { return studentID; }
     string getName() { return name; }
+    string getPhone() { return phone; }
     string getEmail() { return email; }
     float getBalance() { return balance; }
 
     void setUser_id(int);
     void setStudent_id(string);
     void setName(string n) { name = n; }
+    void setPhone(string p) { phone = p; }
     void setEmail(char[]);
     void setBalance(float b) { balance = b; }
 };
@@ -167,11 +174,11 @@ public:
 void Student::print()
 {
     cout << "\nUser ID:" << user_id
-         << "\nStudent ID: " << student_id
+         << "\nStudent ID: " << studentID
          << "\nName: " << name
          << "\nEmail: " << email
          << "\nBalance: " << balance
-         << "\nActivate: " << is_active;
+         << "\nActivate: " << isActive;
 }
 
 void Student::reserve_meal(Meal M)
