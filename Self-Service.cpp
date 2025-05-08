@@ -255,6 +255,7 @@ public:
     RStatus getStatus() { return status; }
 
     void setReservation_id(int i) { reservationID = i; }
+    void setStatus(RStatus R) { status = R; }
 };
 
 void Reservation::print()
