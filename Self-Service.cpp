@@ -5,6 +5,7 @@
 using namespace std;
 
 class User;
+class Admin;
 class Student;
 class DiningHall;
 class Reservation;
@@ -18,6 +19,12 @@ private:
     string lastName;
     string hashedPassword;
 
+public:
+};
+
+class Admin : public User
+{
+private:
 public:
 };
 
