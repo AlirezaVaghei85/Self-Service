@@ -92,6 +92,7 @@ public:
     void setMeal_id(int i) { mealID = i; }
     void setName(string n) { name = n; }
     void setPrice(float p) { price = p; }
+    void setMealType(MealType m) { mealType = m; }
 };
 
 void Meal::print()
