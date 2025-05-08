@@ -232,35 +232,35 @@ void Student::setEmail(char e[])
 class Reservation
 {
 private:
-    int reservation_id;
-    Student Student;
-    DiningHall dHall;
-    Meal meal;
-    enum status
+    int reservationID;
+    Student *Student;
+    DiningHall *dHall;
+    Meal *meal;
+    enum RStatus
     {
         SUCCEESS,
         CANCELLED,
         FAILED
     };
-    status res_status;
-    time_t created_at;
+    RStatus status;
+    time_t createdAT;
 
 public:
     Reservation();
     void print();
     bool cancel();
 
-    int getReservation_id() { return reservation_id; }
-    Meal getMeal() { return meal; }
+    int getReservation_id() { return reservationID; }
+    Meal getMeal() { return *meal; }
 
-    void setReservation_id(int i) { reservation_id = i; }
+    void setReservation_id(int i) { reservationID = i; }
 };
 
 void Reservation::print()
 {
-    cout << "\nReservation ID: " << reservation_id
+    cout << "\nReservation ID: " << reservationID
          << "\nReservation Status: ";
-    switch (res_status)
+    switch (status)
     {
     case SUCCEESS:
         cout << "SUCCEESS";
@@ -275,16 +275,16 @@ void Reservation::print()
         break;
     }
     cout << "\nStudent Information: ";
-    Student.print();
+    Student->print();
     cout << "\nMeal information: ";
-    meal.print();
+    meal->print();
     cout << "\nDining Hall Information: ";
-    dHall.print();
+    dHall->print();
 }
 
 bool Reservation::cancel()
 {
-    res_status = CANCELLED;
+    status = CANCELLED;
     cout << "\nReservation Cancelled";
     return true;
 }
