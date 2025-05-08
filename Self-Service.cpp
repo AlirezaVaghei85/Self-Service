@@ -93,6 +93,7 @@ public:
     void setName(string n) { name = n; }
     void setPrice(float p) { price = p; }
     void setMealType(MealType m) { mealType = m; }
+    void setResesrveDay(ReserveDay r) { reserveday = r; }
 };
 
 void Meal::print()
