@@ -85,6 +85,7 @@ public:
     void activate() { isActive = true; }
     void deactivate() { isActive = false; }
     void addSideItem(string s) { sideItems.push_back(s); }
+    void addPrice(float p) { setPrice(price + p); }
 
     int getMeal_id() { return mealID; }
     string getName() { return name; }
