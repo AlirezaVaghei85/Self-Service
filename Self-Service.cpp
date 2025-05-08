@@ -34,6 +34,14 @@ public:
     void setHashedPassword(string h) { hashedPassword = h; }
 };
 
+void User::print() const
+{
+    cout << "\nUSER ID: " << userID
+         << "\nName: " << name
+         << "\nLast Name: " << lastName
+         << "\nHashed Password: " << hashedPassword;
+}
+
 class Admin : public User
 {
 private:
