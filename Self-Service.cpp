@@ -82,6 +82,8 @@ public:
     void print();
     bool cancel();
     bool isActivate() { return isActive; }
+    void activate() { isActive = true; }
+    void deactivate() { isActive = false; }
 
     int getMeal_id() { return mealID; }
     string getName() { return name; }
