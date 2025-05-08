@@ -4,10 +4,22 @@
 #include <string.h>
 using namespace std;
 
+class User;
 class Student;
 class DiningHall;
 class Reservation;
 class Meal;
+
+class User
+{
+private:
+    int userID;
+    string name;
+    string lastName;
+    string hashedPassword;
+
+public:
+};
 
 class Meal
 {
