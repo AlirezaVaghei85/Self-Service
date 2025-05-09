@@ -5,6 +5,7 @@
 using namespace std;
 
 class Storage;
+class Panel;
 class User;
 class Admin;
 class Student;
@@ -26,6 +27,21 @@ private:
 public:
     Storage(const Storage &) = delete;
     Storage operator=(const Storage &) = delete;
+};
+
+class Panel
+{
+public:
+    void showStudentInfo();
+    void checkBalance();
+    void viewReservations();
+    void addReservation(Reservation);
+    void addToShoppingCart();
+    void confirmShoppingCart();
+    void removeShoppingCartItem();
+    void increaseBalance();
+    void viewRecentTransactions();
+    void cancelReservation(int);
 };
 
 class User
