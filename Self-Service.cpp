@@ -4,12 +4,24 @@
 #include <string.h>
 using namespace std;
 
+class Storage;
 class User;
 class Admin;
 class Student;
 class DiningHall;
 class Reservation;
 class Meal;
+
+class Storage
+{
+private:
+    int mealIDCounter;
+    int diningHallIDCounter;
+    vector<Meal> allMeals;
+    vector<DiningHall> allDiningHalls;
+
+public:
+};
 
 class User
 {
@@ -247,7 +259,7 @@ private:
 
 public:
     Reservation();
-    void print();
+    void print() const;
     bool cancel();
 
     int getReservation_id() { return reservationID; }
@@ -258,7 +270,7 @@ public:
     void setStatus(RStatus R) { status = R; }
 };
 
-void Reservation::print()
+void Reservation::print() const
 {
     cout << "\nReservation ID: " << reservationID
          << "\nReservation Status: ";
