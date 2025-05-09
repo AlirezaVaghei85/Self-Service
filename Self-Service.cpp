@@ -20,7 +20,12 @@ private:
     vector<Meal> allMeals;
     vector<DiningHall> allDiningHalls;
 
+    static Storage &instance();
+    Storage() = default;
+
 public:
+    Storage(const Storage &) = delete;
+    Storage operator=(const Storage &) = delete;
 };
 
 class User
