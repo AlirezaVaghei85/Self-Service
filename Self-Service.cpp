@@ -32,6 +32,7 @@ public:
 class Panel
 {
 public:
+    void showMenu();
     void showStudentInfo();
     void checkBalance();
     void viewReservations();
@@ -43,6 +44,19 @@ public:
     void viewRecentTransactions();
     void cancelReservation(int);
 };
+
+void Panel::showMenu()
+{
+    cout << "\n1. Show Student Info."
+         << "\n2. Check Balance."
+         << "\n3. View Reservation."
+         << "\n4. Add Reservation."
+         << "\n5. Add To Shopping Cart."
+         << "\n6. Remove Shopping Cart Item."
+         << "\n7. Increase Balance."
+         << "\n8. View Recent Transactions."
+         << "\n9. Cancel Reservation.";
+}
 
 class User
 {
