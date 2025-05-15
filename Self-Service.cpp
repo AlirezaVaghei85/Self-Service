@@ -238,7 +238,7 @@ public:
     void setHall_id(int i) { hallID = i; }
     void setName(string n) { name = n; }
     void setAddress(string a) { address = a; }
-    void setCapacity(int c) { capacity = c; }
+    void setCapacity(int c) { capacity = (c > 0) ? c : -1 * c; }
 };
 
 void DiningHall::print()
@@ -380,6 +380,20 @@ bool Reservation::cancel()
     status = CANCELLED;
     cout << "\nReservation Cancelled";
     return true;
+}
+
+int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
+{
+    char x;
+    int a = 0;
+
+    while (x != 10)
+    {
+        x = getchar();
+        if (x >= '0' && x <= '9')
+            a = (a * 10) + (x - 48);
+    }
+    return a;
 }
 
 int main()
