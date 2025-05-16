@@ -191,6 +191,11 @@ void ShoppingCart::addReservation(Reservation reservation)
     reservations.push_back(reservation);
 }
 
+void ShoppingCart::removeReservation(int ID)
+{
+    reservations.erase(reservations.begin() + ID);
+}
+
 int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
 {
     char x;

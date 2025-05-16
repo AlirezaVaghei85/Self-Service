@@ -12,6 +12,7 @@ private:
 
 public:
     void addReservation(Reservation);
+    void removeReservation(int);
 };
 
 #endif
