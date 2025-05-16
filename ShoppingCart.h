@@ -1,14 +1,17 @@
 #ifndef SHOPPINGCART_H_INCLUDE
 #define SHOPPINGCART_H_INCLUDE
 #include <iostream>
+#include <vector>
 #include "Reservation.h"
 using namespace std;
 
 class ShoppingCart
 {
 private:
-    /* data */
+    vector<Reservation> reservations;
+
 public:
+    void addReservation(Reservation);
 };
 
 #endif

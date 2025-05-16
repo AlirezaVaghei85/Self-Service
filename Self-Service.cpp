@@ -10,6 +10,7 @@
 #include "Reservation.h"
 #include "DiningHall.h"
 #include "Meal.h"
+#include "ShoppingCart.h"
 using namespace std;
 
 class Storage;
@@ -183,6 +184,11 @@ bool Reservation::cancel()
     status = CANCELLED;
     cout << "\nReservation Cancelled";
     return true;
+}
+
+void ShoppingCart::addReservation(Reservation reservation)
+{
+    reservations.push_back(reservation);
 }
 
 int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
