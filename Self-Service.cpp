@@ -196,6 +196,14 @@ void ShoppingCart::removeReservation(int ID)
     reservations.erase(reservations.begin() + ID);
 }
 
+void ShoppingCart::viewShoppingCartItems()
+{
+    for (int i = 0; i < reservations.size(); i++)
+    {
+        reservations[i].print();
+    }
+}
+
 int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
 {
     char x;
