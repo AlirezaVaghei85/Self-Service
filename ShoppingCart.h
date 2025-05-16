@@ -1,6 +1,7 @@
-#ifndef STUDENT_H_INCLUDE
-#define STUDENT_H_INCLUDE
+#ifndef SHOPPINGCART_H_INCLUDE
+#define SHOPPINGCART_H_INCLUDE
 #include <iostream>
+#include "Reservation.h"
 using namespace std;
 
 class ShoppingCart
