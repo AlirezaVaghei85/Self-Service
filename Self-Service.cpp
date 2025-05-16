@@ -204,6 +204,11 @@ void ShoppingCart::viewShoppingCartItems()
     }
 }
 
+void ShoppingCart::clear()
+{
+    reservations.clear();
+}
+
 int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
 {
     char x;
