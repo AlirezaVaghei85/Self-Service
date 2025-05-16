@@ -14,6 +14,8 @@ public:
     void addReservation(Reservation);
     void removeReservation(int);
     void viewShoppingCartItems();
+    void clear();
+    vector<Reservation> getReservations() const;
 };
 
 #endif

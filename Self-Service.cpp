@@ -209,6 +209,11 @@ void ShoppingCart::clear()
     reservations.clear();
 }
 
+vector<Reservation> ShoppingCart::getReservations() const
+{
+    return reservations;
+}
+
 int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
 {
     char x;
