@@ -12,7 +12,6 @@ public:
     void showStudentInfo();
     void checkBalance();
     void viewReservations();
-    void addReservation(Reservation);
     void addToShoppingCart();
     void confirmShoppingCart();
     void removeShoppingCartItem();
