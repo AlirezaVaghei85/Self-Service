@@ -33,7 +33,18 @@ namespace AdminSession
         ShoppingCart *shopping_cart;
         int studentID;
 
+        static SessionManager &instance();
+
     public:
+        Student currentStudent();
+        ShoppingCart shoppingCart();
+        void load_session() override;
+        void save_session() override;
+        void login(string, string) override;
+        void logout() override;
+
+        Student getCurrentStudent() { return *currentStudent; }
+        ShoppingCart getShoppingCart() { return *shopping_cart; }
     };
 }
 namespace StudentSession
