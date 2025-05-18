@@ -1,7 +1,7 @@
 #include <iostream>
-#include <ctime>
 #include <vector>
 #include <string.h>
+#include "SessionBase.h"
 #include "Storage.h"
 #include "Panel.h"
 #include "User.h"
@@ -11,7 +11,9 @@
 #include "DiningHall.h"
 #include "Meal.h"
 #include "ShoppingCart.h"
+#include "Transaction.h"
 using namespace std;
+// using namespace StudentSession;
 
 class Storage;
 class Panel;
@@ -21,6 +23,30 @@ class Student;
 class DiningHall;
 class Reservation;
 class Meal;
+
+namespace AdminSession
+{
+    class SessionManager : public SessionBase
+    {
+    private:
+        Student *currentStudent;
+        ShoppingCart *shopping_cart;
+        int studentID;
+
+    public:
+    };
+}
+namespace StudentSession
+{
+    class SessionManger : public SessionBase
+    {
+    private:
+        Admin *currentAdmin;
+        int adminID;
+
+    public:
+    };
+}
 
 void Panel::showMenu()
 {
