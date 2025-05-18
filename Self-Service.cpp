@@ -13,7 +13,7 @@
 #include "ShoppingCart.h"
 #include "Transaction.h"
 using namespace std;
-// using namespace StudentSession;
+using namespace StudentSession;
 
 class Storage;
 class Panel;
@@ -49,13 +49,23 @@ namespace AdminSession
 }
 namespace StudentSession
 {
-    class SessionManger : public SessionBase
+    class SessionManager : public SessionBase
     {
     private:
         Admin *currentAdmin;
         int adminID;
 
+        static SessionManager &instance();
+
     public:
+        Admin currentAdmin();
+        void load_session() override;
+        void save_session() override;
+        void login(string, string) override;
+        void logout() override;
+
+        Admin getcurrentAdmin() { return *currentAdmin; }
+        int getAdminID() { return adminID; }
     };
 }
 
