@@ -1,11 +1,14 @@
 #ifndef PANEL_H_INCLUDE
 #define PANEL_H_INCLUDE
 #include <iostream>
-#include "Reservation.h"
+#include "Student.h"
 using namespace std;
 
 class Panel
 {
+private:
+    Student *student;
+
 public:
     void Action(int);
     void showMenu();

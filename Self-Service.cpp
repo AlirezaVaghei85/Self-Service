@@ -74,13 +74,12 @@ void Panel::showMenu()
     cout << "\n1. Show Student Info."
          << "\n2. Check Balance."
          << "\n3. View Reservations."
-         << "\n4. Add Reservation."
-         << "\n5. Add To Shopping Cart."
-         << "\n6. Remove Shopping Cart Item."
-         << "\n7. Increase Balance."
-         << "\n8. View Recent Transactions."
-         << "\n9. Cancel Reservation."
-         << "\n10. Exit.";
+         << "\n4. Add To Shopping Cart."
+         << "\n5. Remove Shopping Cart Item."
+         << "\n6. Increase Balance."
+         << "\n7. View Recent Transactions."
+         << "\n8. Cancel Reservation."
+         << "\n9. Exit.";
 }
 
 void Panel::Action(int key)
@@ -97,31 +96,32 @@ void Panel::Action(int key)
         viewReservations();
         break;
     case 4:
-        Reservation R;
-        addReservation(R);
-        break;
-    case 5:
         addToShoppingCart();
         break;
-    case 6:
+    case 5:
         removeShoppingCartItem();
         break;
-    case 7:
+    case 6:
         increaseBalance();
         break;
-    case 8:
+    case 7:
         viewRecentTransactions();
         break;
-    case 9:
+    case 8:
         int i;
         cancelReservation(i);
         break;
-    case 10:
+    case 9:
         exit();
         break;
     default:
         break;
     }
+}
+
+void Panel::showStudentInfo()
+{
+    student->print();
 }
 
 void User::print() const
