@@ -124,6 +124,24 @@ void Panel::showStudentInfo()
     student->print();
 }
 
+void Panel::checkBalance()
+{
+    cout << "Balance: " << student->getBalance();
+}
+
+void Panel::viewReservations()
+{
+    for (Reservation *R : reserves)
+    {
+        R->print();
+    }
+}
+
+void Panel::viewShoppingCart()
+{
+    shoppingcart->viewShoppingCartItems();
+}
+
 void User::print() const
 {
     cout << "\nUSER ID: " << userID

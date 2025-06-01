@@ -26,7 +26,7 @@ public:
     bool isActive() { return isActive; }
     void activate() { isActive = true; }
     void deactivate() { isActive = false; }
-    vector<Reservation> getReserves();
+    vector<Reservation> getReserves() { return reserves; }
 
     int getUser_id() { return user_id; }
     string getStudentID() { return studentID; }

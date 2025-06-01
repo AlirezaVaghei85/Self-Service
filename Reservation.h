@@ -6,6 +6,13 @@
 #include "Meal.h"
 using namespace std;
 
+enum RStatus
+{
+    SUCCEESS,
+    CANCELLED,
+    FAILED
+};
+
 class Reservation
 {
 private:
@@ -13,12 +20,6 @@ private:
     Student *Student;
     DiningHall *dHall;
     Meal *meal;
-    enum RStatus
-    {
-        SUCCEESS,
-        CANCELLED,
-        FAILED
-    };
     RStatus status;
     time_t createdAT;
 
