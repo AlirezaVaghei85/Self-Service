@@ -13,7 +13,6 @@
 #include "ShoppingCart.h"
 #include "Transaction.h"
 using namespace std;
-using namespace StudentSession;
 
 class Storage;
 class Panel;
@@ -35,7 +34,7 @@ namespace AdminSession
         static SessionManager &instance();
 
     public:
-        Admin currentAdmin();
+        // Admin currentAdmin();
         void load_session() override;
         void save_session() override;
         void login(string, string) override;
@@ -57,7 +56,7 @@ namespace StudentSession
         static SessionManager &instance();
 
     public:
-        Student currentStudent();
+        // Student currentStudent();
         ShoppingCart shoppingCart();
         void load_session() override;
         void save_session() override;
@@ -226,6 +225,7 @@ bool Student::cancel_reservation(Reservation *R)
     balance += M.getPrice();
 
     R->cancel();
+    return true;
 }
 
 void Student::setEmail(char e[])
@@ -236,6 +236,14 @@ void Student::setEmail(char e[])
     {
         email = e;
     }
+}
+
+Reservation::Reservation(int ID, Student *S, Meal *M, DiningHall *DH, RStatus RST)
+{
+    setReservation_id(ID);
+    student = S;
+    meal = M;
+    dHall = DH;
 }
 
 void Reservation::print() const
@@ -257,7 +265,7 @@ void Reservation::print() const
         break;
     }
     cout << "\nStudent Information: ";
-    Student->print();
+    student->print();
     cout << "\nMeal information: ";
     meal->print();
     cout << "\nDining Hall Information: ";

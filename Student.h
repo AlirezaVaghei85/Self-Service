@@ -23,7 +23,7 @@ public:
     void getType();
     void reserve_meal(Meal);
     bool cancel_reservation(Reservation *);
-    bool isActive() { return isActive; }
+    bool isActivate() { return isActive; }
     void activate() { isActive = true; }
     void deactivate() { isActive = false; }
     vector<Reservation> getReserves() { return reserves; }

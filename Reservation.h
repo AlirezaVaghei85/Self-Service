@@ -6,6 +6,11 @@
 #include "Meal.h"
 using namespace std;
 
+class Student;
+class DiningHall;
+class Reservation;
+class Meal;
+
 enum RStatus
 {
     SUCCEESS,
@@ -17,14 +22,14 @@ class Reservation
 {
 private:
     int reservationID;
-    Student *Student;
+    Student *student;
     DiningHall *dHall;
     Meal *meal;
     RStatus status;
     time_t createdAT;
 
 public:
-    Reservation();
+    Reservation(int ID, Student *S, Meal *M, DiningHall *DH, RStatus RST);
     void print() const;
     bool cancel();
 
