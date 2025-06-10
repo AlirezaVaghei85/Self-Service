@@ -1,4 +1,4 @@
-#ifndef SESSIONBASE_INCLUDE
+#ifndef SESSIONBASE_H_INCLUDE
 #define SESSIONBASE_H_INCLUDE
 #include <iostream>
 using namespace std;

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
-#include <SessionManager.h>
+#include "SessionManager.h"
 #include "SessionBase.h"
 #include "Storage.h"
 #include "Panel.h"
@@ -150,6 +150,7 @@ void Meal::print()
 bool Meal::cancel()
 {
     cout << "\nMeal Cancelled";
+    return true;
 }
 
 void DiningHall::print()
@@ -188,7 +189,7 @@ void Student::setEmail(char e[])
 {
     char *p;
     p = strstr(e, "@gamil.com");
-    if (p = "@gmail.com")
+    if (p)
     {
         email = e;
     }
@@ -208,13 +209,13 @@ void Reservation::print() const
          << "\nReservation Status: ";
     switch (status)
     {
-    case SUCCEESS:
+    case Success:
         cout << "SUCCEESS";
         break;
-    case CANCELLED:
+    case Cancelled:
         cout << "CANCELLED";
         break;
-    case FAILED:
+    case Failed:
         cout << "FAILED";
         break;
     default:
@@ -230,7 +231,7 @@ void Reservation::print() const
 
 bool Reservation::cancel()
 {
-    status = CANCELLED;
+    status = Cancelled;
     cout << "\nReservation Cancelled";
     return true;
 }

@@ -1,3 +1,9 @@
+#include <iostream>
+#include "SessionBase.h"
+#include "Admin.h"
+#include "Student.h"
+#include "ShoppingCart.h"
+
 namespace AdminSession
 {
     class SessionManager : public SessionBase

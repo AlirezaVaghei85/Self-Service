@@ -13,9 +13,9 @@ class Meal;
 
 enum RStatus
 {
-    SUCCEESS,
-    CANCELLED,
-    FAILED
+    Success,
+    Cancelled,
+    Failed
 };
 
 class Reservation
