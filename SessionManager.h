@@ -1,3 +1,5 @@
+#ifndef SESSIONMANAGER_H_INCLUDE
+#define SESSIONMANAGER_H_INCLUDE
 #include <iostream>
 #include "SessionBase.h"
 #include "Admin.h"
@@ -34,8 +36,6 @@ namespace StudentSession
         ShoppingCart *shopping_cart;
         int studentID;
 
-        static SessionManager &instance();
-
     public:
         // Student currentStudent();
         ShoppingCart shoppingCart();
@@ -44,7 +44,14 @@ namespace StudentSession
         void login(string, string) override;
         void logout() override;
 
+        static SessionManager &instance()
+        {
+            static SessionManager instance;
+            return instance;
+        }
+
         Student getCurrentStudent() { return *currentStudent; }
         ShoppingCart getShoppingCart() { return *shopping_cart; }
     };
 }
+#endif

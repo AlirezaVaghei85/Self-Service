@@ -5,16 +5,19 @@
 #include "Student.h"
 #include "Reservation.h"
 #include "ShoppingCart.h"
+#include "SessionManager.h"
 using namespace std;
 
 class Panel
 {
 private:
-    Student *student;
+    StudentSession::SessionManager &CurrentSession = StudentSession::SessionManager::instance();
+    Student student;
     vector<Reservation *> reserves;
-    ShoppingCart *shoppingcart;
+    ShoppingCart shoppingcart;
 
 public:
+    Panel();
     void Action(int);
     void showMenu();
     void showStudentInfo();

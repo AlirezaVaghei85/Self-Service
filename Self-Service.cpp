@@ -24,6 +24,12 @@ class DiningHall;
 class Reservation;
 class Meal;
 
+Panel::Panel()
+{
+    student = CurrentSession.getCurrentStudent();
+    shoppingcart = CurrentSession.getShoppingCart();
+}
+
 void Panel::showMenu()
 {
     cout << "\n1. Show Student Info."
@@ -76,12 +82,12 @@ void Panel::Action(int key)
 
 void Panel::showStudentInfo()
 {
-    student->print();
+    student.print();
 }
 
 void Panel::checkBalance()
 {
-    cout << "Balance: " << student->getBalance();
+    cout << "Balance: " << student.getBalance();
 }
 
 void Panel::viewReservations()
@@ -94,7 +100,7 @@ void Panel::viewReservations()
 
 void Panel::viewShoppingCart()
 {
-    shoppingcart->viewShoppingCartItems();
+    shoppingcart.viewShoppingCartItems();
 }
 
 void Panel::addToShoppingCart()
@@ -106,7 +112,7 @@ void Panel::removeShoppingCartItem()
     int i;
     cout << "Enter Reservation ID: ";
     cin >> i;
-    shoppingcart->removeReservation(i);
+    shoppingcart.removeReservation(i);
 }
 
 void Panel::increaseBalance()
@@ -114,7 +120,7 @@ void Panel::increaseBalance()
     float i;
     cout << "Enter The Balance You Need To Increase: ";
     cin >> i;
-    student->setBalance(student->getBalance() + i);
+    student.setBalance(student.getBalance() + i);
 }
 
 void User::print() const
