@@ -14,14 +14,18 @@ namespace AdminSession
         Admin *currentAdmin;
         int adminID;
 
-        static SessionManager &instance();
-
     public:
         // Admin currentAdmin();
         void load_session() override;
         void save_session() override;
         void login(string, string) override;
         void logout() override;
+
+        static SessionManager &instance()
+        {
+            static SessionManager instance;
+            return instance;
+        }
 
         Admin getcurrentAdmin() { return *currentAdmin; }
         int getAdminID() { return adminID; }
