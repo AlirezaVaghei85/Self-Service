@@ -13,10 +13,15 @@ private:
     vector<Meal> allMeals;
     vector<DiningHall> allDiningHalls;
 
-    static Storage &instance();
     Storage() = default;
 
 public:
+    static Storage &instance()
+    {
+        static Storage instance;
+        return instance;
+    }
+
     Storage(const Storage &) = delete;
     Storage operator=(const Storage &) = delete;
 };
