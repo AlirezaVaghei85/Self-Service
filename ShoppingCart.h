@@ -16,6 +16,7 @@ public:
     void viewShoppingCartItems();
     void clear();
     vector<Reservation> getReservations() const;
+    Transaction confirm();
 };
 
 #endif
