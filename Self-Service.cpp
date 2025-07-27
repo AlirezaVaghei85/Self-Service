@@ -275,6 +275,11 @@ vector<Reservation> ShoppingCart::getReservations() const
     return reservations;
 }
 
+Transaction::Transaction()
+{
+    ID = ++nextID;
+}
+
 int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
 {
     char x;

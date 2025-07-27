@@ -19,7 +19,7 @@ enum TransactionStatus
 class Transaction
 {
 private:
-    int transactionID;
+    static int nextID;
     string trackingCode;
     float amount;
     TransactionType type;
@@ -27,18 +27,21 @@ private:
     time_t created_AT;
 
 public:
+    int ID;
     Transaction();
 
-    void setTransactionID(int i) { transactionID = i; }
+    void setTransactionID(int i) { ID = i; }
     void setTrackingCode(int i) { trackingCode = i; }
     void setAmount(int i) { amount = i; }
     void setType(TransactionType t) { type = t; }
     void setStatus(TransactionStatus s) { status = s; }
     void setTime(time_t T) { created_AT = T; }
 
-    int getTransactionID() { return transactionID; }
+    int getTransactionID() { return ID; }
     string getTrackingCode() { return trackingCode; }
     float getAmount() { return amount; }
 };
+
+int MyClass::nextID = 0;
 
 #endif
