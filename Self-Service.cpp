@@ -242,6 +242,11 @@ bool Reservation::cancel()
     return true;
 }
 
+ShoppingCart::ShoppingCart()
+{
+    ID = ++nextID;
+}
+
 void ShoppingCart::addReservation(Reservation reservation)
 {
     reservations.push_back(reservation);

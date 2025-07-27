@@ -8,9 +8,12 @@ using namespace std;
 class ShoppingCart
 {
 private:
+    static int nextID;
     vector<Reservation> reservations;
 
 public:
+    int ID;
+    ShoppingCart();
     void addReservation(Reservation);
     void removeReservation(int);
     void viewShoppingCartItems();
@@ -18,5 +21,7 @@ public:
     vector<Reservation> getReservations() const;
     Transaction confirm();
 };
+
+int ShoppingCart::nextID = 0;
 
 #endif
