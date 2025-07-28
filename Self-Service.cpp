@@ -275,6 +275,25 @@ vector<Reservation> ShoppingCart::getReservations() const
     return reservations;
 }
 
+Transaction ShoppingCart::confirm()
+{
+    Transaction Trans;
+    Trans.setStatus(PENDING);
+    Trans.setType(PAYMENT);
+    float amount = 0;
+    for (Reservation R : reservations)
+    {
+        amount += R.getMeal().getPrice();
+    }
+    Trans.setAmount(amount);
+    time_t currentTime = time(NULL);
+    Trans.setTime(currentTime);
+    srand(time(0));
+    long long int randomNumber = 100000000000 + (rand() % (99999999900000000000));
+    Trans.setTrackingCode(to_string(randomNumber));
+    return Trans;
+}
+
 Transaction::Transaction()
 {
     ID = ++nextID;
