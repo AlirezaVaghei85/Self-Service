@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
+#include <ctime>
 #include "SessionManager.h"
 #include "SessionBase.h"
 #include "Storage.h"
@@ -290,7 +291,7 @@ Transaction ShoppingCart::confirm()
     Trans.setTime(currentTime);
     srand(time(0));
     long long int randomNumber = 100000000000 + (rand() % (99999999900000000000));
-    Trans.setTrackingCode(to_string(randomNumber));
+    Trans.setTrackingCode(randomNumber);
     return Trans;
 }
 

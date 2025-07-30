@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "Reservation.h"
+#include "Transaction.h"
 using namespace std;
 
 class ShoppingCart
