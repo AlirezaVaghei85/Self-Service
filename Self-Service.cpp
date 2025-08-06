@@ -2,6 +2,7 @@
 #include <vector>
 #include <string.h>
 #include <ctime>
+#include <fstream>
 #include "SessionManager.h"
 #include "SessionBase.h"
 #include "Storage.h"
@@ -24,6 +25,84 @@ class Student;
 class DiningHall;
 class Reservation;
 class Meal;
+
+void StudentSession::SessionManager::login()
+{
+    string line;
+    int location;
+    int userID;
+    string studentID;
+    string name;
+    string lastname;
+    string password;
+    string email;
+    string phone;
+    string Entered_Email;
+    string Entered_Password;
+    bool Is_Found = false;
+
+    cout << "Login" << endl
+         << "Enter Your Email Address: ";
+    cin >> Entered_Email;
+
+    ifstream fp("studentsCsvFile.csv", ios::in);
+    if (fp.is_open())
+    {
+        line = "";
+        getline(fp, line);
+
+        while (getline(fp, line))
+        {
+            fp >> userID;
+
+            location = line.find(",");
+            line = line.substr(location + 1, line.length());
+            location = line.find(",");
+            studentID = line.substr(0, location);
+
+            line = line.substr(location + 1, line.length());
+            location = line.find(",");
+            name = line.substr(0, location);
+
+            line = line.substr(location + 1, line.length());
+            location = line.find(",");
+            lastname = line.substr(0, location);
+
+            line = line.substr(location + 1, line.length());
+            location = line.find(",");
+            password = line.substr(0, location);
+
+            line = line.substr(location + 1, line.length());
+            location = line.find(",");
+            email = line.substr(0, location);
+
+            line = line.substr(location + 1, line.length());
+            location = line.find(",");
+            phone = line.substr(0, location);
+
+            if (Entered_Email == email)
+            {
+                Is_Found = true;
+                cout << "Enter Your Password: ";
+                cin >> Entered_Password;
+                if (Entered_Password == password)
+                {
+                    *this->load_session();
+                }
+            }
+            else
+            {
+                cout << "Email Not Found!";
+            }
+        }
+    }
+    else
+    {
+        system("cls");
+        cout << "Error! Can not open the studentsCsvFile.csv";
+    }
+    fp.close();
+}
 
 Panel::Panel()
 {
@@ -316,5 +395,8 @@ int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
 
 int main()
 {
+    StudentSession::SessionManager S1;
+    S1.login();
+
     return 0;
 }

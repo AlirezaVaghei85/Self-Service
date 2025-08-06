@@ -18,7 +18,7 @@ private:
     vector<Reservation> reserves;
 
 public:
-    Student();
+    Student() {}
     void print() const;
     void getType();
     void reserve_meal(Meal);

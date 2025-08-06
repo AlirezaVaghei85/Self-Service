@@ -19,7 +19,7 @@ protected:
     virtual void save_session() = 0;
 
 public:
-    virtual void login(string, string) = 0;
+    virtual void login() = 0;
     virtual void logout() = 0;
 };
 

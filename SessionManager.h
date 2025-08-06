@@ -18,7 +18,7 @@ namespace AdminSession
         // Admin currentAdmin();
         void load_session() override;
         void save_session() override;
-        void login(string, string) override;
+        void login() override;
         void logout() override;
 
         static SessionManager &instance()
@@ -45,7 +45,7 @@ namespace StudentSession
         ShoppingCart shoppingCart();
         void load_session() override;
         void save_session() override;
-        void login(string, string) override;
+        void login() override;
         void logout() override;
 
         static SessionManager &instance()

@@ -28,9 +28,9 @@ public:
     void confirmShoppingCart();
     void removeShoppingCartItem();
     void increaseBalance();
-    void viewRecentTransactions();
-    void cancelReservation(int);
-    void exit();
+    void viewRecentTransactions() {}
+    void cancelReservation(int) {}
+    void exit() {}
 };
 
 #endif
