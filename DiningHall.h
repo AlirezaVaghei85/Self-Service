@@ -12,7 +12,7 @@ private:
     int capacity;
 
 public:
-    DiningHall();
+    DiningHall() {}
     void print();
 
     int getHall_id() { return hallID; }

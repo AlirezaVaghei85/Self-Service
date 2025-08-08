@@ -24,8 +24,8 @@ public:
     void checkBalance();
     void viewReservations();
     void viewShoppingCart();
-    void addToShoppingCart();
-    void confirmShoppingCart();
+    void addToShoppingCart() {}
+    void confirmShoppingCart() {}
     void removeShoppingCartItem();
     void increaseBalance();
     void viewRecentTransactions() {}

@@ -8,8 +8,8 @@ class Admin : public User
 {
 private:
 public:
-    void print() const;
-    void getType();
+    void print() const {}
+    void getType() {}
 };
 
 #endif

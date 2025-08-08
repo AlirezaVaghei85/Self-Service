@@ -51,7 +51,7 @@ void StudentSession::SessionManager::login()
         line = "";
         getline(fp, line);
 
-        while (getline(fp, line))
+        while (getline(fp, line) || !Is_Found)
         {
             fp >> userID;
 
@@ -82,26 +82,38 @@ void StudentSession::SessionManager::login()
 
             if (Entered_Email == email)
             {
-                Is_Found = true;
                 cout << "Enter Your Password: ";
                 cin >> Entered_Password;
                 if (Entered_Password == password)
                 {
-                    *this->load_session();
+                    Is_Found = true;
+                    // *this->load_session();
                 }
-            }
-            else
-            {
-                cout << "Email Not Found!";
+                else
+                    break;
             }
         }
+        if (Is_Found)
+        {
+            cout << "Login Successful!" << endl;
+            currentStudent->setUser_id(userID);
+            currentStudent->setStudentID(studentID);
+            currentStudent->setName(name);
+            currentStudent->setPhone(phone);
+            currentStudent->setEmail(email.c_str());
+            currentStudent->activate();
+        }
+        else
+        {
+            cout << "Error! Email or Password is incorrect." << endl;
+        }
+        fp.close();
     }
     else
     {
         system("cls");
         cout << "Error! Can not open the studentsCsvFile.csv";
     }
-    fp.close();
 }
 
 Panel::Panel()
@@ -149,7 +161,10 @@ void Panel::Action(int key)
         viewRecentTransactions();
         break;
     case 8:
+        cout << "Choose a Reservatoin: " << endl;
+        viewReservations();
         int i;
+        cin >> i;
         cancelReservation(i);
         break;
     case 9:
@@ -181,10 +196,6 @@ void Panel::viewReservations()
 void Panel::viewShoppingCart()
 {
     shoppingcart.viewShoppingCartItems();
-}
-
-void Panel::addToShoppingCart()
-{
 }
 
 void Panel::removeShoppingCartItem()
@@ -271,14 +282,16 @@ bool Student::cancel_reservation(Reservation *R)
     return true;
 }
 
-void Student::setEmail(char e[])
+void Student::setEmail(string Entered_Email)
 {
-    char *p;
-    p = strstr(e, "@gamil.com");
-    if (p)
+    int location = Entered_Email.find("@");
+    string check_email = Entered_Email.substr(location, Entered_Email.length());
+    if (check_email == "@gmail.com" || check_email == "@yahoo.com")
     {
-        email = e;
+        email = Entered_Email;
     }
+    else
+        cout << "INVALID EMAIL!";
 }
 
 Reservation::Reservation(int ID, Student *S, Meal *M, DiningHall *DH, RStatus RST)
@@ -287,6 +300,7 @@ Reservation::Reservation(int ID, Student *S, Meal *M, DiningHall *DH, RStatus RS
     student = S;
     meal = M;
     dHall = DH;
+    status = RST;
 }
 
 void Reservation::print() const
@@ -339,7 +353,8 @@ void ShoppingCart::removeReservation(int ID)
 
 void ShoppingCart::viewShoppingCartItems()
 {
-    for (int i = 0; i < reservations.size(); i++)
+    int size = reservations.size();
+    for (int i = 0; i < size; i++)
     {
         reservations[i].print();
     }
@@ -369,7 +384,7 @@ Transaction ShoppingCart::confirm()
     time_t currentTime = time(NULL);
     Trans.setTime(currentTime);
     srand(time(0));
-    long long int randomNumber = 100000000000 + (rand() % (99999999900000000000));
+    long long int randomNumber = 100000000000 + (rand() % (99999900000000000));
     Trans.setTrackingCode(randomNumber);
     return Trans;
 }
@@ -395,8 +410,10 @@ int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
 
 int main()
 {
-    StudentSession::SessionManager S1;
-    S1.login();
+    system("cls");
+
+    StudentSession::SessionManager S;
+    S.login();
 
     return 0;
 }

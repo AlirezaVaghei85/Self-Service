@@ -42,6 +42,6 @@ public:
     float getAmount() { return amount; }
 };
 
-// int MyClass::nextID = 0;
+int Transaction::nextID = 0;
 
 #endif

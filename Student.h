@@ -20,7 +20,7 @@ private:
 public:
     Student() {}
     void print() const;
-    void getType();
+    void getType() {}
     void reserve_meal(Meal);
     bool cancel_reservation(Reservation *);
     bool isActivate() { return isActive; }
@@ -35,11 +35,11 @@ public:
     string getEmail() { return email; }
     float getBalance() { return balance; }
 
-    void setUser_id(int);
-    void setStudentID(string);
+    void setUser_id(int i) { user_id = i; }
+    void setStudentID(string ID) { studentID = ID; }
     void setName(string n) { name = n; }
     void setPhone(string p) { phone = p; }
-    void setEmail(char[]);
+    void setEmail(string);
     void setBalance(float b) { balance = b; }
 };
 

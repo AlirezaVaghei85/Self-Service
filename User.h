@@ -13,7 +13,7 @@ private:
 
 public:
     virtual void print() const;
-    virtual void getType();
+    virtual void getType() {}
 
     int getUserID() { return userID; }
     string getName() { return name; }
