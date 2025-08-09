@@ -15,7 +15,7 @@ private:
     string email;
     float balance;
     bool isActive;
-    vector<Reservation> reserves;
+    vector<Reservation *> reserves;
 
 public:
     Student() {}
@@ -26,7 +26,7 @@ public:
     bool isActivate() { return isActive; }
     void activate() { isActive = true; }
     void deactivate() { isActive = false; }
-    vector<Reservation> getReserves() { return reserves; }
+    vector<Reservation *> getReserves() { return reserves; }
 
     int getUser_id() { return user_id; }
     string getStudentID() { return studentID; }

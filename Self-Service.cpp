@@ -26,6 +26,33 @@ class DiningHall;
 class Reservation;
 class Meal;
 
+static bool AdminSession::SessionManager::sign_in()
+{
+    string name;
+    string lastname;
+    string email;
+    string password;
+
+    cout << "Enter Name: ";
+    cin >> name;
+    cout << "Enter Last Name: ";
+    cin >> lastname;
+    cout << "Enter Email: ";
+    cin >> email;
+    cout << "Enter Password: ";
+    cin >> password;
+    ofstream fs("sessions/admins/admins.csv", ios::out | ios::app);
+    if (fs.is_open())
+    {
+        fs << name << lastname << email << password;
+    }
+    else
+    {
+        ofstream log("logfile.log", ios::out | ios::app);
+        log << "Error! Can not open the sessions/admins/admins.csv file";
+    }
+}
+
 void StudentSession::SessionManager::login()
 {
     string line;
@@ -45,15 +72,15 @@ void StudentSession::SessionManager::login()
          << "Enter Your Email Address: ";
     cin >> Entered_Email;
 
-    ifstream fp("studentsCsvFile.csv", ios::in);
-    if (fp.is_open())
+    ifstream fs("studentsCsvFile.csv", ios::in);
+    if (fs.is_open())
     {
-        line = "";
-        getline(fp, line);
+        line = " ";
+        getline(fs, line);
 
-        while (getline(fp, line) || !Is_Found)
+        while (getline(fs, line) || !Is_Found)
         {
-            fp >> userID;
+            fs >> userID;
 
             location = line.find(",");
             line = line.substr(location + 1, line.length());
@@ -87,7 +114,6 @@ void StudentSession::SessionManager::login()
                 if (Entered_Password == password)
                 {
                     Is_Found = true;
-                    // *this->load_session();
                 }
                 else
                     break;
@@ -96,34 +122,59 @@ void StudentSession::SessionManager::login()
         if (Is_Found)
         {
             cout << "Login Successful!" << endl;
-            currentStudent->setUser_id(userID);
-            currentStudent->setStudentID(studentID);
-            currentStudent->setName(name);
-            currentStudent->setPhone(phone);
-            currentStudent->setEmail(email.c_str());
-            currentStudent->activate();
+            currentStudent.setUser_id(userID);
+            currentStudent.setStudentID(studentID);
+            currentStudent.setName(name);
+            currentStudent.setPhone(phone);
+            currentStudent.setEmail(email.c_str());
+            currentStudent.activate();
         }
         else
         {
             cout << "Error! Email or Password is incorrect." << endl;
         }
-        fp.close();
+        fs.close();
     }
     else
     {
-        system("cls");
-        cout << "Error! Can not open the studentsCsvFile.csv";
+        ofstream log("logfile.log", ios::out | ios::app);
+        log << "Error! Can not open the studentsCsvFile.csv";
+    }
+}
+
+void StudentSession::SessionManager::save_session()
+{
+    string name = currentStudent.getStudentID();
+    name.append(".txt");
+    string dir = "sessions/students/transactions/";
+    dir.append(name);
+    cout << dir << endl;
+    ofstream fs(dir, ios::out | ios::trunc);
+
+    if (fs.is_open())
+    {
+        // fs <<
+    }
+    else
+    {
+        ofstream log("logfile.log", ios::out | ios::app);
+        log << "Cannot open the " << dir << " file!";
     }
 }
 
 Panel::Panel()
 {
-    student = CurrentSession.getCurrentStudent();
-    shoppingcart = CurrentSession.getShoppingCart();
+    student = CurrentStudent.getCurrentStudent();
+    reserves = student.getReserves();
+    // for (int i = 0; i < student.getReserves().size(); i++)
+    // {
+    //     reserves[i] = student.getReserves()[i];
+    // }
 }
 
 void Panel::showMenu()
 {
+    system("cls");
     cout << "\n1. Show Student Info."
          << "\n2. Check Balance."
          << "\n3. View Reservations."
@@ -412,8 +463,15 @@ int main()
 {
     system("cls");
 
-    StudentSession::SessionManager S;
+    StudentSession::SessionManager &S = StudentSession::SessionManager::instance();
     S.login();
+    Panel P;
+    P.showMenu();
+    cout << endl
+         << "Choose an option: ";
+    int x;
+    cin >> x;
+    P.Action(x);
 
     return 0;
 }

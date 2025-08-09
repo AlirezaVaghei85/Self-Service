@@ -8,6 +8,11 @@ class Admin : public User
 {
 private:
 public:
+    Admin()
+    {
+        setName(" ");
+        setLastName(" ");
+    }
     void print() const {}
     void getType() {}
 };

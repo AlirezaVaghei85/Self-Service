@@ -11,7 +11,7 @@ using namespace std;
 class Panel
 {
 private:
-    StudentSession::SessionManager &CurrentSession = StudentSession::SessionManager::instance();
+    StudentSession::SessionManager &CurrentStudent = StudentSession::SessionManager::instance();
     Student student;
     vector<Reservation *> reserves;
     ShoppingCart shoppingcart;
