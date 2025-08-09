@@ -1,10 +1,15 @@
 #ifndef ADMINPANEL_H_INCLUDE
 #define ADMINPANEL_H_INCLUDE
 #include <iostream>
+#include "Storage.h"
 using namespace std;
 
 class AdminPanel
 {
+private:
+    Storage &storage = Storage::instance();
+
+public:
     void chooseCsvFile(fs::path) {}
     void displayAllMeals() {}
     void displayAllDininigHalls() {}
@@ -13,7 +18,7 @@ class AdminPanel
     void removeMeal(int) {}
     void mealAcitvation(int, bool) {}
     void removeDiningHall(int) {}
-    void showMenu() {}
+    void showMenu();
     void action(int) {}
 }
 

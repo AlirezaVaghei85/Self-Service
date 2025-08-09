@@ -7,6 +7,7 @@
 #include "SessionBase.h"
 #include "Storage.h"
 #include "Panel.h"
+#include "AdminPanel.h"
 #include "User.h"
 #include "Admin.h"
 #include "Student.h"
@@ -263,6 +264,19 @@ void Panel::increaseBalance()
     cout << "Enter The Balance You Need To Increase: ";
     cin >> i;
     student.setBalance(student.getBalance() + i);
+}
+
+void AdminPanel::showMenu()
+{
+    system("cls");
+    cout << "\n1.Choose Csv File."
+         << "\n2.Display All Meals."
+         << "\n3.Display All DininigHalls"
+         << "\n4.Add New Meal Intractive"
+         << "\n5.Add New DiningHall Intractive"
+         << "\n6.Remove Meal"
+         << "\n7.Meal Acitvation"
+         << "\n8.Remove DiningHall";
 }
 
 void User::print() const
