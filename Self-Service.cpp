@@ -140,6 +140,7 @@ void StudentSession::SessionManager::login()
     {
         ofstream log("logfile.log", ios::out | ios::app);
         log << "Error! Can not open the studentsCsvFile.csv";
+        log.close();
     }
 }
 
@@ -160,6 +161,7 @@ void StudentSession::SessionManager::save_session()
     {
         ofstream log("logfile.log", ios::out | ios::app);
         log << "Cannot open the " << dir << " file!";
+        log.close();
     }
 }
 
@@ -277,6 +279,50 @@ void AdminPanel::showMenu()
          << "\n6.Remove Meal"
          << "\n7.Meal Acitvation"
          << "\n8.Remove DiningHall";
+}
+
+void AdminPanel::action(int key)
+{
+    int x;
+    switch (key)
+    {
+    // case 1:
+    //     chooseCsvFile();
+    //     break;
+    case 2:
+        displayAllMeals();
+        break;
+    case 3:
+        displayAllDininigHalls();
+        break;
+    case 4:
+        addNewMealIntractive();
+        break;
+    case 5:
+        addNewDiningHallIntractive();
+        break;
+    case 6:
+        cout << "Enter The Meal ID: ";
+        cin >> x;
+        removeMeal(x);
+        break;
+    case 7:
+        cout << "Enter The Meal ID: ";
+        cin >> x;
+        cout << "Choose One:(True/False) ";
+        bool answer;
+        cin >> answer;
+        mealAcitvation(x, answer);
+        break;
+    case 8:
+        cout << "Enter The Dining Hall ID: ";
+        cin >> x;
+        removeDiningHall(x);
+        break;
+
+    default:
+        break;
+    }
 }
 
 void User::print() const
