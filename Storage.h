@@ -16,6 +16,13 @@ private:
     Storage() = default;
 
 public:
+    void addMeal(Meal);
+    void addDinningHall(DinningHall);
+    void removeMeal(int);
+    void removeDinningHall(int);
+    void MealActivation(int, bool);
+    vector<Meal>::iterator findMeal(int);
+    vector<DinningHall>::iterator findDiningHall(int);
     static Storage &instance()
     {
         static Storage instance;
