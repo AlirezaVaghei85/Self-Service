@@ -32,7 +32,7 @@ private:
     vector<string> sideItems;
 
 public:
-    Meal();
+    Meal() {}
     void print();
     bool cancel();
     bool isActivate() { return isActive; }

@@ -8,8 +8,8 @@ using namespace std;
 class Storage
 {
 private:
-    int mealIDCounter;
-    int diningHallIDCounter;
+    int mealIDCounter = 0;
+    int diningHallIDCounter = 0;
     vector<Meal> allMeals;
     vector<DiningHall> allDiningHalls;
 

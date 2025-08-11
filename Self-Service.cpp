@@ -168,6 +168,86 @@ void StudentSession::SessionManager::save_session()
     }
 }
 
+void Storage::displayAllMeals()
+{
+    for (const Meal &meal : allMeals)
+    {
+        meal.print();
+    }
+}
+
+void Storage::displayAllDininigHalls()
+{
+    for (const DiningHall &hall : allDiningHalls)
+    {
+        hall.print();
+    }
+}
+
+void Storage::addMeal(Meal meal)
+{
+    meal.setMeal_id(mealIDCounter++);
+    allMeals.push_back(meal);
+}
+
+void Storage::addDinningHall(DiningHall dhall)
+{
+    dhall.setHallID(diningHallIDCounter++);
+    allDiningHalls.push_back(dhall);
+}
+
+void Storage::removeMeal(int mealID)
+{
+    auto it = findMeal(mealID);
+    if (it != allMeals.end())
+    {
+        allMeals.erase(it);
+    }
+}
+
+void Storage::removeDinningHall(int hallID)
+{
+    auto it = findDiningHall(hallID);
+    if (it != allDiningHalls.end())
+    {
+        allDiningHalls.erase(it);
+    }
+}
+
+void Storage::MealActivation(int mealID, bool activate)
+{
+    auto it = findMeal(mealID);
+    if (it != allMeals.end())
+    {
+        if (activate)
+            it->activate();
+        else
+            it->deactivate();
+    }
+}
+
+vector<Meal>::iterator Storage::findMeal(int mealID)
+{
+    vector<Meal>::iterator meal;
+
+    for (meal = allMeals.begin(); meal != allDiningHalls.end(); ++meal)
+    {
+        cout << *meal << "\n";
+    }
+    return meal;
+}
+
+vector<DiningHall>::iterator Storage::findDiningHall(int hallID)
+{
+    vector<DiningHall>::iterator DHall;
+
+    for (DHall = allDiningHalls.begin(); DHall != allDiningHalls.end(); ++DHall)
+    {
+        cout << *DHall << "\n";
+    }
+    return DHall;
+}
+
 Panel::Panel()
 {
     student = CurrentStudent.getCurrentStudent();
