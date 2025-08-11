@@ -16,7 +16,8 @@ namespace AdminSession
 
     public:
         // Admin currentAdmin();
-        static bool sign_in(); // for adding new admin
+        void sign_in();                  // for adding new admin
+        static bool isThereAnyAdmin() {} // for checking if there is any admin in the system
         void load_session() override;
         void save_session() override;
         void login() override;

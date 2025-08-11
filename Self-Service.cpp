@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctime>
 #include <fstream>
+#include <filesystem>
 #include "SessionManager.h"
 #include "SessionBase.h"
 #include "Storage.h"
@@ -17,6 +18,7 @@
 #include "ShoppingCart.h"
 #include "Transaction.h"
 using namespace std;
+namespace fs = std::filesystem;
 
 class Storage;
 class Panel;
@@ -27,7 +29,7 @@ class DiningHall;
 class Reservation;
 class Meal;
 
-static bool AdminSession::SessionManager::sign_in()
+void AdminSession::SessionManager::sign_in()
 {
     string name;
     string lastname;
@@ -51,6 +53,7 @@ static bool AdminSession::SessionManager::sign_in()
     {
         ofstream log("logfile.log", ios::out | ios::app);
         log << "Error! Can not open the sessions/admins/admins.csv file";
+        log.close();
     }
 }
 
@@ -284,11 +287,14 @@ void AdminPanel::showMenu()
 void AdminPanel::action(int key)
 {
     int x;
+    fs::path directorypath;
     switch (key)
     {
-    // case 1:
-    //     chooseCsvFile();
-    //     break;
+    case 1:
+        cout << "Enter The Csv File Path: ";
+        cin >> directorypath;
+        chooseCsvFile(directorypath);
+        break;
     case 2:
         displayAllMeals();
         break;
@@ -319,10 +325,107 @@ void AdminPanel::action(int key)
         cin >> x;
         removeDiningHall(x);
         break;
-
     default:
         break;
     }
+}
+
+void AdminPanel::chooseCsvFile(fs::path path)
+{
+    if (fs::exists(path))
+    {
+        cout << "File exists: " << path << endl;
+    }
+    else
+    {
+        cout << "File does not exist, creating directory..." << endl;
+        fs::create_directory(path);
+    }
+
+    ofstream fs(path / "admin.csv", ios::out | ios::app);
+    if (fs.is_open())
+    {
+        cout << "CSV file opened successfully." << endl;
+        fs.close();
+    }
+    else
+    {
+        ofstream log("logfile.log", ios::out | ios::app);
+        log << "Error! Can not open the sessions/admins/admins.csv file";
+        log.close();
+    }
+}
+
+void AdminPanel::displayAllMeals()
+{
+    storage.displayAllMeals();
+}
+
+void AdminPanel::displayAllDininigHalls()
+{
+    storage.displayAllDininigHalls();
+}
+
+void AdminPanel::addNewMealIntractive()
+{
+    Meal M;
+    string name;
+    float price;
+    int mealType, reserveDay;
+
+    cout << "Enter Meal Name: ";
+    cin >> name;
+    M.setName(name);
+
+    cout << "Enter Meal Price: ";
+    cin >> price;
+    M.setPrice(price);
+
+    cout << "Choose Meal Type (0: Breakfast, 1: Lunch, 2: Dinner): ";
+    cin >> mealType;
+    M.setMealType(static_cast<MealType>(mealType));
+
+    cout << "Choose Reserve Day (0: Saturday, 1: Sunday, 2: Monday, 3: Tuesday, 4: Wednesday, 5: Thursday, 6: Friday): ";
+    cin >> reserveDay;
+    M.setResesrveDay(static_cast<ReserveDay>(reserveDay));
+
+    storage.addMeal(M);
+}
+
+void AdminPanel::addNewDiningHallIntractive()
+{
+    DiningHall DH;
+    string name, address;
+    int capacity;
+
+    cout << "Enter Dining Hall Name: ";
+    cin >> name;
+    DH.setName(name);
+
+    cout << "Enter Dining Hall Address: ";
+    cin >> address;
+    DH.setAddress(address);
+
+    cout << "Enter Dining Hall Capacity: ";
+    cin >> capacity;
+    DH.setCapacity(capacity);
+
+    storage.addDinningHall(DH);
+}
+
+void AdminPanel::removeMeal(int mealID)
+{
+    storage.removeMeal(mealID);
+}
+
+void AdminPanel::mealAcitvation(int mealID, bool activate)
+{
+    storage.MealActivation(mealID, activate);
+}
+
+void AdminPanel::removeDiningHall(int hallID)
+{
+    storage.removeDinningHall(hallID);
 }
 
 void User::print() const

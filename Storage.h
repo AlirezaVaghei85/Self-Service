@@ -16,6 +16,8 @@ private:
     Storage() = default;
 
 public:
+    void displayAllMeals();
+    void displayAllDininigHalls();
     void addMeal(Meal);
     void addDinningHall(DinningHall);
     void removeMeal(int);
