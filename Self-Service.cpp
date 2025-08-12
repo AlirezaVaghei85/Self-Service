@@ -6,6 +6,7 @@
 #include <filesystem>
 #include "SessionManager.h"
 #include "SessionBase.h"
+#include "ConfigPaths.h"
 #include "Storage.h"
 #include "Panel.h"
 #include "AdminPanel.h"
@@ -166,6 +167,32 @@ void StudentSession::SessionManager::save_session()
         log << "Cannot open the " << dir << " file!";
         log.close();
     }
+}
+
+fs::path ConfigPaths::j_reservations(Student *student)
+{
+    string name = student->getStudentID();
+    name.append(".json");
+    string dir = "sessions/students/reservations/";
+    dir.append(name);
+    if (!fs::exists(dir))
+    {
+        fs::create_directories(dir);
+    }
+    return fs::path(dir);
+}
+
+fs::path ConfigPaths::t_transactions(Student *student)
+{
+    string name = student->getStudentID();
+    name.append(".txt");
+    string dir = t_student_transactions.string();
+    dir.append(name);
+    if (!fs::exists(dir))
+    {
+        fs::create_directories(dir);
+    }
+    return fs::path(dir);
 }
 
 void Storage::displayAllMeals()

@@ -18,16 +18,19 @@ private:
     fs::path d_sessions = "sessions";
     fs::path d_student_sessions = "sessions/students";
     fs::path d_admin_sessions = "sessions/admins";
-    fs::path j_admin_config = d_config / "admin_config.json";
-    fs::path j_ConfigPaths = d_config / "ConfigPaths.json";
-    fs::path j_meals = "meals.json";
-    fs::path j_dininghalls = "dininghalls.json";
-    fs::path j_foodservice_ids = d_foodservice / "foodservice_ids.json";
-    fs::path l_students_log_file = d_logs / "students.log";
-    fs::path l_admins_log_file = d_logs / "admins.log";
-    fs::path t_student_transactions = d_student_sessions / "transactions.txt";
+    fs::path j_admin_config = d_config / "admin_config";
+    fs::path j_ConfigPaths = d_config / "ConfigPaths";
+    fs::path j_meals = "meals";
+    fs::path j_dininghalls = "dininghalls";
+    fs::path j_foodservice_ids = d_foodservice / "foodservice_ids";
+    fs::path l_students_log_file = d_logs / "students";
+    fs::path l_admins_log_file = d_logs / "admins";
+    fs::path t_student_transactions = d_student_sessions / "transactions";
 
 public:
+    fs::path j_reservations(Student * = nullptr);
+    fs::path t_transactions(Student * = nullptr);
+
     static ConfigPaths &instance()
     {
         static ConfigPaths instance;
