@@ -2,6 +2,7 @@
 #define CONFIGPATHS_H_INCLUDE
 #include <iostream>
 #include <filesystem>
+#include "Student.h"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -11,6 +12,7 @@ class ConfigPaths
 private:
     ConfigPaths() = default;
 
+public:
     fs::path c_students;
     fs::path d_logs = "logs";
     fs::path d_config = "config";
@@ -27,7 +29,6 @@ private:
     fs::path l_admins_log_file = d_logs / "admins";
     fs::path t_student_transactions = d_student_sessions / "transactions";
 
-public:
     fs::path j_reservations(Student * = nullptr);
     fs::path t_transactions(Student * = nullptr);
 

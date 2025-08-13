@@ -2,6 +2,7 @@
 #define SESSIONMANAGER_H_INCLUDE
 #include <iostream>
 #include "SessionBase.h"
+#include "ConfigPaths.h"
 #include "Admin.h"
 #include "Student.h"
 #include "ShoppingCart.h"
@@ -13,11 +14,12 @@ namespace AdminSession
     private:
         Admin currentAdmin;
         int adminID;
+        ConfigPaths &CP = ConfigPaths::instance();
 
     public:
         // Admin currentAdmin();
-        void sign_in();                  // for adding new admin
-        static bool isThereAnyAdmin() {} // for checking if there is any admin in the system
+        void sign_up();         // for adding new admin
+        bool isThereAnyAdmin(); // for checking if there is any admin in the system
         void load_session() override;
         void save_session() override;
         void login() override;

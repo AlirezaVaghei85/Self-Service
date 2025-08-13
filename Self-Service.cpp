@@ -21,16 +21,22 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+class SessionManager;
+class SessionBase;
+class ConfigPath;
 class Storage;
 class Panel;
+class AdminPanel;
 class User;
 class Admin;
 class Student;
 class DiningHall;
 class Reservation;
 class Meal;
+class ShoppingCart;
+class Transaction;
 
-void AdminSession::SessionManager::sign_in()
+void AdminSession::SessionManager::sign_up()
 {
     string name;
     string lastname;
@@ -45,10 +51,10 @@ void AdminSession::SessionManager::sign_in()
     cin >> email;
     cout << "Enter Password: ";
     cin >> password;
-    ofstream fs("sessions/admins/admins.csv", ios::out | ios::app);
+    ofstream fs(CP.d_admin_sessions / "admin.csv", ios::out | ios::trunc);
     if (fs.is_open())
     {
-        fs << name << lastname << email << password;
+        fs << email << "," << password << "," << name << "," << lastname << endl;
     }
     else
     {
@@ -56,6 +62,14 @@ void AdminSession::SessionManager::sign_in()
         log << "Error! Can not open the sessions/admins/admins.csv file";
         log.close();
     }
+}
+
+bool AdminSession::SessionManager::isThereAnyAdmin()
+{
+    if (fs::is_empty(CP.d_admin_sessions))
+        return false;
+    else
+        return true;
 }
 
 void StudentSession::SessionManager::login()
@@ -741,14 +755,47 @@ int main()
     system("cls");
 
     StudentSession::SessionManager &S = StudentSession::SessionManager::instance();
-    S.login();
-    Panel P;
-    P.showMenu();
-    cout << endl
-         << "Choose an option: ";
-    int x;
-    cin >> x;
-    P.Action(x);
+    AdminSession::SessionManager &A = AdminSession::SessionManager::instance();
+    ConfigPaths &CP = ConfigPaths::instance();
+
+    if (!A.isThereAnyAdmin())
+    {
+        cout << "No admin found. Please sign up as an admin first." << endl;
+        A.sign_up();
+    }
+
+    cout << "Welcome to the Self-Service System!" << endl;
+    string email;
+    string password;
+    string Entered_Email;
+    string Entered_Password;
+    cout << "Enter Email: ";
+    cin >> Entered_Email;
+    cout << "Enter Password: ";
+    cin >> Entered_Password;
+
+    ifstream fs(CP.d_admin_sessions / "admin.csv", ios::in);
+    if (fs.is_open())
+    {
+        fs >> email >> password;
+        if (Entered_Email == email && Entered_Password == password)
+        {
+            system("cls");
+            cout << "Email And Password Found" << endl
+                 << "sign in as Admin";
+            system("cls");
+            A.login();
+            AdminPanel adminPanel;
+            int choice;
+            do
+            {
+                adminPanel.showMenu();
+                cout << "\nEnter your choice: ";
+                choice = GetInteger();
+                adminPanel.action(choice);
+            } while (choice != 9);
+        }
+    }
 
     return 0;
 }
