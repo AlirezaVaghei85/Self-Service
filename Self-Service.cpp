@@ -765,6 +765,15 @@ int main()
     }
 
     cout << "Welcome to the Self-Service System!" << endl;
+
+    int location;
+    int userID;
+    string studentID;
+    string name;
+    string lastname;
+    string phone;
+    string line;
+    bool Is_Found = false;
     string email;
     string password;
     string Entered_Email;
@@ -777,13 +786,16 @@ int main()
     ifstream fs(CP.d_admin_sessions / "admin.csv", ios::in);
     if (fs.is_open())
     {
-        fs >> email >> password;
+        fs >> email >> password >> name >> lastname;
         if (Entered_Email == email && Entered_Password == password)
         {
+            Is_Found = true;
             system("cls");
             cout << "Email And Password Found" << endl
                  << "sign in as Admin";
             system("cls");
+            A.getcurrentAdmin().setName(name);
+            A.getcurrentAdmin().setLastName(lastname);
             A.login();
             AdminPanel adminPanel;
             int choice;
@@ -794,8 +806,86 @@ int main()
                 choice = GetInteger();
                 adminPanel.action(choice);
             } while (choice != 9);
-        }
-    }
+        } // end of if
+        else
+        {
+            fs.close();
+            fs.open("studentsCsvFile.csv", ios::in);
+            if (fs.is_open())
+            {
+                line = " ";
+                getline(fs, line);
 
+                while (getline(fs, line) || !Is_Found)
+                {
+                    fs >> userID;
+
+                    location = line.find(",");
+                    line = line.substr(location + 1, line.length());
+                    location = line.find(",");
+                    studentID = line.substr(0, location);
+
+                    line = line.substr(location + 1, line.length());
+                    location = line.find(",");
+                    name = line.substr(0, location);
+
+                    line = line.substr(location + 1, line.length());
+                    location = line.find(",");
+                    lastname = line.substr(0, location);
+
+                    line = line.substr(location + 1, line.length());
+                    location = line.find(",");
+                    password = line.substr(0, location);
+
+                    line = line.substr(location + 1, line.length());
+                    location = line.find(",");
+                    email = line.substr(0, location);
+
+                    line = line.substr(location + 1, line.length());
+                    location = line.find(",");
+                    phone = line.substr(0, location);
+
+                    if (Entered_Email == email)
+                    {
+                        if (Entered_Password == password)
+                        {
+                            Is_Found = true;
+                        }
+                        else
+                            break;
+                    }
+                } // end of while
+                if (Is_Found)
+                {
+                    cout << "Login Successful!" << endl;
+                    S.getCurrentStudent().setUser_id(userID);
+                    S.getCurrentStudent().setStudentID(studentID);
+                    S.getCurrentStudent().setName(name);
+                    S.getCurrentStudent().setPhone(phone);
+                    S.getCurrentStudent().setEmail(email.c_str());
+                    S.getCurrentStudent().activate();
+                    S.login();
+                }
+                else
+                {
+                    cout << "Error! Email or Password is incorrect." << endl;
+                }
+                fs.close();
+            } // end of if
+            else
+            {
+                ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
+                log << "Error! Can not open the studentsCsvFile.csv file";
+                log.close();
+            }
+
+        } // end of else
+    }
+    else
+    {
+        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
+        log << "Error! Can not open the " << CP.d_admin_sessions << "/admin.csv file";
+        log.close();
+    }
     return 0;
-}
+} // end of main()
