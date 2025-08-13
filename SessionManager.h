@@ -3,6 +3,8 @@
 #include <iostream>
 #include "SessionBase.h"
 #include "ConfigPaths.h"
+#include "Panel.h"
+#include "AdminPanel.h"
 #include "Admin.h"
 #include "Student.h"
 #include "ShoppingCart.h"
@@ -43,6 +45,7 @@ namespace StudentSession
         Student currentStudent;
         ShoppingCart shopping_cart;
         int studentID;
+        Panel StudentPanel;
 
     public:
         // Student currentStudent();

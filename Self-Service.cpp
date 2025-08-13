@@ -74,6 +74,17 @@ bool AdminSession::SessionManager::isThereAnyAdmin()
 
 void StudentSession::SessionManager::login()
 {
+    load_session();
+    int choice;
+    do
+    {
+        StudentPanel.showMenu();
+        cout << "\nEnter your choice: ";
+        choice = GetInteger();
+        StudentPanel.Action(choice);
+    } while (choice != 9);
+    save_session();
+    logout();
 }
 
 void StudentSession::SessionManager::save_session()
