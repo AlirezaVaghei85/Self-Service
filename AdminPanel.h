@@ -12,7 +12,7 @@ private:
     Storage &storage = Storage::instance();
 
 public:
-    void chooseCsvFile(fs::path) {}
+    void chooseCsvFile(fs::path);
     void displayAllMeals();
     void displayAllDininigHalls();
     void addNewMealIntractive();

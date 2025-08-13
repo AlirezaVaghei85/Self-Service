@@ -4,28 +4,30 @@
 #include <vector>
 using namespace std;
 
+enum MealType
+{
+    Breakefast,
+    Lunch,
+    Dinner
+};
+
+enum ReserveDay
+{
+    Saturday,
+    Sunday,
+    Monday,
+    Tueseday,
+    Wednesday,
+    Thursday,
+    Friday
+};
+
 class Meal
 {
 private:
     int mealID;
     string name;
     float price;
-    enum MealType
-    {
-        Breakefast,
-        Lunch,
-        Dinner
-    };
-    enum ReserveDay
-    {
-        Saturday,
-        Sunday,
-        Monday,
-        Tueseday,
-        Wednesday,
-        Thursday,
-        Friday
-    };
     ReserveDay reserveday;
     bool isActive;
     MealType mealType;

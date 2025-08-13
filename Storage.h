@@ -1,6 +1,7 @@
 #ifndef STORAGE_H_INCLUDE
 #define STORAGE_H_INCLUDE
 #include <iostream>
+#include <vector>
 #include "Meal.h"
 #include "DiningHall.h"
 using namespace std;
@@ -19,12 +20,12 @@ public:
     void displayAllMeals();
     void displayAllDininigHalls();
     void addMeal(Meal);
-    void addDinningHall(DinningHall);
+    void addDiningHall(DiningHall);
     void removeMeal(int);
-    void removeDinningHall(int);
+    void removeDiningHall(int);
     void MealActivation(int, bool);
     vector<Meal>::iterator findMeal(int);
-    vector<DinningHall>::iterator findDiningHall(int);
+    vector<DiningHall>::iterator findDiningHall(int);
     static Storage &instance()
     {
         static Storage instance;
