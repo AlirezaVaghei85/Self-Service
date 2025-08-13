@@ -58,7 +58,7 @@ void AdminSession::SessionManager::sign_up()
     }
     else
     {
-        ofstream log("logfile.log", ios::out | ios::app);
+        ofstream log(CP.l_admins_log_file, ios::out | ios::app);
         log << "Error! Can not open the sessions/admins/admins.csv file";
         log.close();
     }
@@ -74,92 +74,6 @@ bool AdminSession::SessionManager::isThereAnyAdmin()
 
 void StudentSession::SessionManager::login()
 {
-    string line;
-    int location;
-    int userID;
-    string studentID;
-    string name;
-    string lastname;
-    string password;
-    string email;
-    string phone;
-    string Entered_Email;
-    string Entered_Password;
-    bool Is_Found = false;
-
-    cout << "Login" << endl
-         << "Enter Your Email Address: ";
-    cin >> Entered_Email;
-
-    ifstream fs("studentsCsvFile.csv", ios::in);
-    if (fs.is_open())
-    {
-        line = " ";
-        getline(fs, line);
-
-        while (getline(fs, line) || !Is_Found)
-        {
-            fs >> userID;
-
-            location = line.find(",");
-            line = line.substr(location + 1, line.length());
-            location = line.find(",");
-            studentID = line.substr(0, location);
-
-            line = line.substr(location + 1, line.length());
-            location = line.find(",");
-            name = line.substr(0, location);
-
-            line = line.substr(location + 1, line.length());
-            location = line.find(",");
-            lastname = line.substr(0, location);
-
-            line = line.substr(location + 1, line.length());
-            location = line.find(",");
-            password = line.substr(0, location);
-
-            line = line.substr(location + 1, line.length());
-            location = line.find(",");
-            email = line.substr(0, location);
-
-            line = line.substr(location + 1, line.length());
-            location = line.find(",");
-            phone = line.substr(0, location);
-
-            if (Entered_Email == email)
-            {
-                cout << "Enter Your Password: ";
-                cin >> Entered_Password;
-                if (Entered_Password == password)
-                {
-                    Is_Found = true;
-                }
-                else
-                    break;
-            }
-        }
-        if (Is_Found)
-        {
-            cout << "Login Successful!" << endl;
-            currentStudent.setUser_id(userID);
-            currentStudent.setStudentID(studentID);
-            currentStudent.setName(name);
-            currentStudent.setPhone(phone);
-            currentStudent.setEmail(email.c_str());
-            currentStudent.activate();
-        }
-        else
-        {
-            cout << "Error! Email or Password is incorrect." << endl;
-        }
-        fs.close();
-    }
-    else
-    {
-        ofstream log("logfile.log", ios::out | ios::app);
-        log << "Error! Can not open the studentsCsvFile.csv";
-        log.close();
-    }
 }
 
 void StudentSession::SessionManager::save_session()
@@ -207,6 +121,42 @@ fs::path ConfigPaths::t_transactions(Student *student)
         fs::create_directories(dir);
     }
     return fs::path(dir);
+}
+
+void ConfigPaths::Creat_Directories()
+{
+    if (!fs::exists(l_admins_log_file))
+    {
+        fs::create_directory(l_admins_log_file);
+    }
+    if (!fs::exists(l_students_log_file))
+    {
+        fs::create_directory(l_students_log_file);
+    }
+    if (!fs::exists(j_admin_config))
+    {
+        fs::create_directory(j_admin_config);
+    }
+    if (!fs::exists(j_ConfigPaths))
+    {
+        fs::create_directory(j_ConfigPaths);
+    }
+    if (!fs::exists(j_dininghalls))
+    {
+        fs::create_directory(j_dininghalls);
+    }
+    if (!fs::exists(j_foodservice_ids))
+    {
+        fs::create_directory(j_foodservice_ids);
+    }
+    if (!fs::exists(j_meals))
+    {
+        fs::create_directory(j_meals);
+    }
+    if (!fs::exists(t_student_transactions))
+    {
+        fs::create_directory(t_student_transactions);
+    }
 }
 
 void Storage::displayAllMeals()
