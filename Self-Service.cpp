@@ -630,6 +630,25 @@ void AdminPanel::addNewDiningHallIntractive()
     DH.setCapacity(capacity);
 
     storage.addDiningHall(DH);
+
+    json j;
+    j["name"] = name;
+    j["address"] = address;
+    j["capacity"] = capacity;
+
+    name.append(".json");
+    ofstream fs(CP.j_dininghalls / name, ios::out | ios::app);
+    if (fs.is_open())
+    {
+        fs << j;
+        fs.close();
+    }
+    else
+    {
+        ofstream log(CP.l_admins_log_file, ios::out | ios::app);
+        log << "Error! Can not open the " << CP.j_meals.string() << "\\" << name << " file" << endl;
+        log.close();
+    }
 }
 
 void AdminPanel::removeMeal(int mealID)
