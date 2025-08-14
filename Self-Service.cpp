@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <string.h>
+#include <string>
 #include <ctime>
 #include <fstream>
 #include <filesystem>
@@ -35,6 +35,7 @@ class Reservation;
 class Meal;
 class ShoppingCart;
 class Transaction;
+int GetInteger();
 
 void AdminSession::SessionManager::sign_up()
 {
@@ -75,12 +76,15 @@ bool AdminSession::SessionManager::isThereAnyAdmin()
 void StudentSession::SessionManager::login()
 {
     load_session();
+    Panel StudentPanel;
+    char c;
     int choice;
     do
     {
         StudentPanel.showMenu();
         cout << "\nEnter your choice: ";
         choice = GetInteger();
+        system("cls");
         StudentPanel.Action(choice);
     } while (choice != 9);
     save_session();
@@ -136,37 +140,61 @@ fs::path ConfigPaths::t_transactions(Student *student)
 
 void ConfigPaths::Creat_Directories()
 {
-    if (!fs::exists(l_admins_log_file))
+    // if (!fs::exists(l_admins_log_file))
+    // {
+    //     fs::create_directories(l_admins_log_file);
+    // }
+    // if (!fs::exists(l_students_log_file))
+    // {
+    //     fs::create_directories(l_students_log_file);
+    // }
+    // if (!fs::exists(j_admin_config))
+    // {
+    //     fs::create_directories(j_admin_config);
+    // }
+    // if (!fs::exists(j_ConfigPaths))
+    // {
+    //     fs::create_directories(j_ConfigPaths);
+    // }
+    // if (!fs::exists(j_dininghalls))
+    // {
+    //     fs::create_directories(j_dininghalls);
+    // }
+    // if (!fs::exists(j_foodservice_ids))
+    // {
+    //     fs::create_directories(j_foodservice_ids);
+    // }
+    // if (!fs::exists(j_meals))
+    // {
+    //     fs::create_directories(j_meals);
+    // }
+    // if (!fs::exists(t_student_transactions))
+    // {
+    //     fs::create_directories(t_student_transactions);
+    // }
+    if (!fs::exists(d_admin_sessions))
     {
-        fs::create_directory(l_admins_log_file);
+        fs::create_directories(d_admin_sessions);
     }
-    if (!fs::exists(l_students_log_file))
+    if (!fs::exists(d_student_sessions))
     {
-        fs::create_directory(l_students_log_file);
+        fs::create_directories(d_student_sessions);
     }
-    if (!fs::exists(j_admin_config))
+    if (fs::exists(d_logs))
     {
-        fs::create_directory(j_admin_config);
+        fs::create_directories(d_logs);
     }
-    if (!fs::exists(j_ConfigPaths))
+    if (!fs::exists(d_config))
     {
-        fs::create_directory(j_ConfigPaths);
+        fs::create_directories(d_config);
     }
-    if (!fs::exists(j_dininghalls))
+    if (!fs::exists(d_foodservice))
     {
-        fs::create_directory(j_dininghalls);
-    }
-    if (!fs::exists(j_foodservice_ids))
-    {
-        fs::create_directory(j_foodservice_ids);
-    }
-    if (!fs::exists(j_meals))
-    {
-        fs::create_directory(j_meals);
+        fs::create_directories(d_foodservice);
     }
     if (!fs::exists(t_student_transactions))
     {
-        fs::create_directory(t_student_transactions);
+        fs::create_directories(t_student_transactions);
     }
 }
 
@@ -283,10 +311,14 @@ void Panel::showMenu()
 
 void Panel::Action(int key)
 {
+    char c;
     switch (key)
     {
     case 1:
         showStudentInfo();
+        cout << endl
+             << "Enter any key to Continue";
+        getchar();
         break;
     case 2:
         checkBalance();
@@ -718,6 +750,7 @@ int main()
     StudentSession::SessionManager &S = StudentSession::SessionManager::instance();
     AdminSession::SessionManager &A = AdminSession::SessionManager::instance();
     ConfigPaths &CP = ConfigPaths::instance();
+    CP.Creat_Directories();
 
     if (!A.isThereAnyAdmin())
     {

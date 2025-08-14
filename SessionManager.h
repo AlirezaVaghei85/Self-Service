@@ -3,8 +3,6 @@
 #include <iostream>
 #include "SessionBase.h"
 #include "ConfigPaths.h"
-#include "Panel.h"
-#include "AdminPanel.h"
 #include "Admin.h"
 #include "Student.h"
 #include "ShoppingCart.h"
@@ -22,10 +20,10 @@ namespace AdminSession
         // Admin currentAdmin();
         void sign_up();         // for adding new admin
         bool isThereAnyAdmin(); // for checking if there is any admin in the system
-        void load_session() override;
-        void save_session() override;
-        void login() override;
-        void logout() override;
+        void load_session() override {}
+        void save_session() override {}
+        void login() override {}
+        void logout() override {}
 
         static SessionManager &instance()
         {
@@ -45,7 +43,6 @@ namespace StudentSession
         Student currentStudent;
         ShoppingCart shopping_cart;
         int studentID;
-        Panel StudentPanel;
 
     public:
         // Student currentStudent();
@@ -65,4 +62,5 @@ namespace StudentSession
         ShoppingCart getShoppingCart() { return shopping_cart; }
     };
 }
+
 #endif
