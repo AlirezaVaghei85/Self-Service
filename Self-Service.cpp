@@ -73,11 +73,25 @@ bool AdminSession::SessionManager::isThereAnyAdmin()
         return true;
 }
 
+void AdminSession::SessionManager::login()
+{
+    load_session();
+    AdminPanel adminPanel;
+    int choice;
+    do
+    {
+        adminPanel.showMenu();
+        cout << "\nEnter your choice: ";
+        choice = GetInteger();
+        system("cls");
+        adminPanel.action(choice);
+    } while (choice != 9);
+}
+
 void StudentSession::SessionManager::login()
 {
     load_session();
     Panel StudentPanel;
-    char c;
     int choice;
     do
     {
@@ -86,7 +100,7 @@ void StudentSession::SessionManager::login()
         choice = GetInteger();
         system("cls");
         StudentPanel.Action(choice);
-    } while (choice != 9);
+    } while (choice != 11);
     save_session();
     logout();
 }
@@ -298,12 +312,14 @@ void Panel::showMenu()
     cout << "\n1. Show Student Info."
          << "\n2. Check Balance."
          << "\n3. View Reservations."
-         << "\n4. Add To Shopping Cart."
-         << "\n5. Remove Shopping Cart Item."
-         << "\n6. Increase Balance."
-         << "\n7. View Recent Transactions."
-         << "\n8. Cancel Reservation."
-         << "\n9. Exit.";
+         << "\n4. View Shopping Cart."
+         << "\n5. Add To Shopping Cart."
+         << "\n6. Confirm Shopping Cart."
+         << "\n7. Remove Shopping Cart Item."
+         << "\n8. Increase Balance."
+         << "\n9. View Recent Transactions."
+         << "\n10. Cancel Reservation."
+         << "\n11. Exit.";
 }
 
 void Panel::Action(int key)
@@ -323,25 +339,31 @@ void Panel::Action(int key)
         viewReservations();
         break;
     case 4:
-        addToShoppingCart();
+        viewShoppingCart();
         break;
     case 5:
-        removeShoppingCartItem();
+        addToShoppingCart();
         break;
     case 6:
-        increaseBalance();
+        confirmShoppingCart();
         break;
     case 7:
-        viewRecentTransactions();
+        removeShoppingCartItem();
         break;
     case 8:
+        increaseBalance();
+        break;
+    case 9:
+        viewRecentTransactions();
+        break;
+    case 10:
         cout << "Choose a Reservatoin: " << endl;
         viewReservations();
         int i;
         cin >> i;
         cancelReservation(i);
         break;
-    case 9:
+    case 11:
         exit();
         break;
     default:
@@ -372,6 +394,65 @@ void Panel::viewShoppingCart()
     shoppingcart.viewShoppingCartItems();
 }
 
+void Panel::confirmShoppingCart()
+{
+    Transaction Trans = shoppingcart.confirm();
+    string name = student.getStudentID();
+    name.append(".txt");
+    ofstream fs(CP.t_student_transactions / name, ios::out | ios::app);
+
+    if (fs.is_open())
+    {
+        fs << "ID: " << Trans.ID << endl
+           << "Tracking Code: " << Trans.getTrackingCode() << endl
+           << "Amount: " << Trans.getAmount() << endl
+           << "State: " << Trans.getStatus() << endl
+           << "Type: " << Trans.getType() << endl
+           << endl;
+        if (student.getBalance() >= Trans.getAmount())
+        {
+            system("cls");
+            cout << endl
+                 << "Transaction COMPLETED" << endl
+                 << "Press Enter To Continue";
+            getchar();
+
+            Trans.setStatus(COMPLETED);
+            fs << "ID: " << Trans.ID << endl
+               << "Tracking Code: " << Trans.getTrackingCode() << endl
+               << "Amount: " << Trans.getAmount() << endl
+               << "State: " << Trans.getStatus() << endl
+               << "Type: " << Trans.getType() << endl
+               << endl;
+        }
+        else
+        {
+            system("cls");
+            cout << endl
+                 << "Transaction FAILED Your Balance Is Not Enough" << endl
+                 << "Please Encrease Your Balance" << endl
+                 << "Press Enter To Continue";
+            getchar();
+
+            Trans.setStatus(FAILED);
+            fs << "ID: " << Trans.ID << endl
+               << "Tracking Code: " << Trans.getTrackingCode() << endl
+               << "Amount: " << Trans.getAmount() << endl
+               << "State: " << Trans.getStatus() << endl
+               << "Type: " << Trans.getType() << endl
+               << endl;
+        }
+    }
+    else
+    {
+        ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions / name << " file!";
+        log.close();
+    }
+
+    fs.close();
+}
+
 void Panel::removeShoppingCartItem()
 {
     int i;
@@ -398,7 +479,8 @@ void AdminPanel::showMenu()
          << "\n5.Add New DiningHall Intractive"
          << "\n6.Remove Meal"
          << "\n7.Meal Acitvation"
-         << "\n8.Remove DiningHall";
+         << "\n8.Remove DiningHall"
+         << "\n9. Exit";
 }
 
 void AdminPanel::action(int key)
@@ -414,9 +496,15 @@ void AdminPanel::action(int key)
         break;
     case 2:
         displayAllMeals();
+        cout << endl
+             << "Press Enter To Continue";
+        getchar();
         break;
     case 3:
         displayAllDininigHalls();
+        cout << endl
+             << "Press Enter To Continue";
+        getchar();
         break;
     case 4:
         addNewMealIntractive();
@@ -717,26 +805,6 @@ Transaction ShoppingCart::confirm()
     srand(time(0));
     long long int randomNumber = 100000000000 + (rand() % (99999900000000000));
     Trans.setTrackingCode(randomNumber);
-
-    string name = student.getStudentID();
-    name.append(".txt");
-    ofstream fs(CP.t_student_transactions / name, ios::out | ios::app);
-
-    if (fs.is_open())
-    {
-        fs << "ID: " << Trans.ID << endl
-           << "Tracking Code: " << Trans.getTrackingCode() << endl
-           << "Amount: " << Trans.getAmount() << endl
-           << "State: " << Trans.getStatus() << endl
-           << "Type: " << Trans.getType() << endl
-           << endl;
-    }
-    else
-    {
-        ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
-        log << "Cannot open the " << CP.t_student_transactions / name << " file!";
-        log.close();
-    }
     return Trans;
 }
 
@@ -764,9 +832,11 @@ int main()
     system("cls");
 
     Student student;
+    Admin admin;
     StudentSession::SessionManager &S = StudentSession::SessionManager::instance();
     AdminSession::SessionManager &A = AdminSession::SessionManager::instance();
     ConfigPaths &CP = ConfigPaths::instance();
+
     CP.Creat_Directories();
 
     if (!A.isThereAnyAdmin())
@@ -805,18 +875,10 @@ int main()
             cout << "Email And Password Found" << endl
                  << "sign in as Admin";
             system("cls");
-            A.getcurrentAdmin().setName(name);
-            A.getcurrentAdmin().setLastName(lastname);
+            admin.setName(name);
+            admin.setLastName(lastname);
+            A.setCurrentAdmin(admin);
             A.login();
-            AdminPanel adminPanel;
-            int choice;
-            do
-            {
-                adminPanel.showMenu();
-                cout << "\nEnter your choice: ";
-                choice = GetInteger();
-                adminPanel.action(choice);
-            } while (choice != 9);
         } // end of if
         else
         {
@@ -859,9 +921,7 @@ int main()
                     if (Entered_Email == email)
                     {
                         if (Entered_Password == password)
-                        {
                             Is_Found = true;
-                        }
                         else
                             break;
                     }

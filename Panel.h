@@ -12,6 +12,7 @@ class Panel
 {
 private:
     StudentSession::SessionManager &CurrentStudent = StudentSession::SessionManager::instance();
+    ConfigPaths &CP = ConfigPaths::instance();
     Student student;
     vector<Reservation *> reserves;
     ShoppingCart shoppingcart;
@@ -25,7 +26,7 @@ public:
     void viewReservations();
     void viewShoppingCart();
     void addToShoppingCart() {}
-    void confirmShoppingCart() {}
+    void confirmShoppingCart();
     void removeShoppingCartItem();
     void increaseBalance();
     void viewRecentTransactions() {}

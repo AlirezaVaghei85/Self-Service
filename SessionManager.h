@@ -22,7 +22,7 @@ namespace AdminSession
         bool isThereAnyAdmin(); // for checking if there is any admin in the system
         void load_session() override {}
         void save_session() override {}
-        void login() override {}
+        void login() override;
         void logout() override {}
 
         static SessionManager &instance()
@@ -30,6 +30,8 @@ namespace AdminSession
             static SessionManager instance;
             return instance;
         }
+
+        void setCurrentAdmin(Admin A) { currentAdmin = A; }
 
         Admin getcurrentAdmin() { return currentAdmin; }
         int getAdminID() { return adminID; }
@@ -41,7 +43,7 @@ namespace StudentSession
     {
     private:
         Student currentStudent;
-        ShoppingCart shopping_cart;
+        ShoppingCart *shopping_cart;
         int studentID;
         ConfigPaths &CP = ConfigPaths::instance();
 
@@ -59,10 +61,10 @@ namespace StudentSession
             return instance;
         }
 
-        void setCurrentStudent(Student S) { currentStudent = S; };
+        void setCurrentStudent(Student S) { currentStudent = S; }
 
         Student getCurrentStudent() { return currentStudent; }
-        ShoppingCart getShoppingCart() { return shopping_cart; }
+        ShoppingCart getShoppingCart() { return *shopping_cart; }
     };
 }
 

@@ -2,6 +2,8 @@
 #define SHOPPINGCART_H_INCLUDE
 #include <iostream>
 #include <vector>
+#include "SessionManager.h"
+#include "Student.h"
 #include "Reservation.h"
 #include "Transaction.h"
 using namespace std;
@@ -11,9 +13,6 @@ class ShoppingCart
 private:
     static int nextID;
     vector<Reservation> reservations;
-    ConfigPaths &CP = ConfigPaths::instance();
-    StudentSession::SessionManager &CurrentStudent = StudentSession::SessionManager::instance();
-    Student student = CurrentStudent.getCurrentStudent();
 
 public:
     int ID;
