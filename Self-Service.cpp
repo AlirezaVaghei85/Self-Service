@@ -4,6 +4,7 @@
 #include <ctime>
 #include <fstream>
 #include <filesystem>
+#include "json.hpp"
 #include "SessionManager.h"
 #include "SessionBase.h"
 #include "ConfigPaths.h"
@@ -20,6 +21,7 @@
 #include "Transaction.h"
 using namespace std;
 namespace fs = std::filesystem;
+using json = nlohmann::json;
 
 class SessionManager;
 class SessionBase;
@@ -35,7 +37,20 @@ class Reservation;
 class Meal;
 class ShoppingCart;
 class Transaction;
-int GetInteger();
+
+int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
+{
+    char x;
+    int a = 0;
+
+    while (x != 10)
+    {
+        x = getchar();
+        if (x >= '0' && x <= '9')
+            a = (a * 10) + (x - 48);
+    }
+    return a;
+}
 
 void AdminSession::SessionManager::sign_up()
 {
@@ -60,7 +75,7 @@ void AdminSession::SessionManager::sign_up()
     else
     {
         ofstream log(CP.l_admins_log_file, ios::out | ios::app);
-        log << "Error! Can not open the sessions/admins/admins.csv file";
+        log << "Error! Can not open the " << CP.d_admin_sessions << "\\admin.csv" << " file";
         log.close();
     }
 }
@@ -86,6 +101,7 @@ void AdminSession::SessionManager::login()
         system("cls");
         adminPanel.action(choice);
     } while (choice != 9);
+    save_session();
 }
 
 void StudentSession::SessionManager::login()
@@ -118,7 +134,7 @@ void StudentSession::SessionManager::save_session()
     else
     {
         ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
-        log << "Cannot open the " << CP.t_student_transactions / name << " file!";
+        log << "Cannot open the " << CP.t_student_transactions << "\\" << name << " file!";
         log.close();
     }
 }
@@ -151,38 +167,6 @@ fs::path ConfigPaths::t_transactions(Student *student)
 
 void ConfigPaths::Creat_Directories()
 {
-    // if (!fs::exists(l_admins_log_file))
-    // {
-    //     fs::create_directories(l_admins_log_file);
-    // }
-    // if (!fs::exists(l_students_log_file))
-    // {
-    //     fs::create_directories(l_students_log_file);
-    // }
-    // if (!fs::exists(j_admin_config))
-    // {
-    //     fs::create_directories(j_admin_config);
-    // }
-    // if (!fs::exists(j_ConfigPaths))
-    // {
-    //     fs::create_directories(j_ConfigPaths);
-    // }
-    // if (!fs::exists(j_dininghalls))
-    // {
-    //     fs::create_directories(j_dininghalls);
-    // }
-    // if (!fs::exists(j_foodservice_ids))
-    // {
-    //     fs::create_directories(j_foodservice_ids);
-    // }
-    // if (!fs::exists(j_meals))
-    // {
-    //     fs::create_directories(j_meals);
-    // }
-    // if (!fs::exists(t_student_transactions))
-    // {
-    //     fs::create_directories(t_student_transactions);
-    // }
     if (!fs::exists(d_admin_sessions))
     {
         fs::create_directories(d_admin_sessions);
@@ -191,7 +175,7 @@ void ConfigPaths::Creat_Directories()
     {
         fs::create_directories(d_student_sessions);
     }
-    if (fs::exists(d_logs))
+    if (!fs::exists(d_logs))
     {
         fs::create_directories(d_logs);
     }
@@ -207,6 +191,14 @@ void ConfigPaths::Creat_Directories()
     {
         fs::create_directories(t_student_transactions);
     }
+    if (!fs::exists(j_meals))
+    {
+        fs::create_directories(j_meals);
+    }
+    if (!fs::exists(j_dininghalls))
+    {
+        fs::create_directories(j_dininghalls);
+    }
 }
 
 void Storage::displayAllMeals()
@@ -214,6 +206,7 @@ void Storage::displayAllMeals()
     for (Meal &meal : allMeals)
     {
         meal.print();
+        cout << endl;
     }
 }
 
@@ -446,7 +439,7 @@ void Panel::confirmShoppingCart()
     else
     {
         ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
-        log << "Cannot open the " << CP.t_student_transactions / name << " file!";
+        log << "Cannot open the " << CP.t_student_transactions << "\\" << name << " file!";
         log.close();
     }
 
@@ -547,16 +540,17 @@ void AdminPanel::chooseCsvFile(fs::path path)
         fs::create_directory(path);
     }
 
-    ofstream fs(path / "admin.csv", ios::out | ios::app);
+    ofstream fs(path, ios::out | ios::app);
     if (fs.is_open())
     {
         cout << "CSV file opened successfully." << endl;
         fs.close();
+        CP.c_students = path;
     }
     else
     {
         ofstream log("logfile.log", ios::out | ios::app);
-        log << "Error! Can not open the sessions/admins/admins.csv file";
+        log << "Error! Can not open the " << path.string() << " file";
         log.close();
     }
 }
@@ -595,6 +589,26 @@ void AdminPanel::addNewMealIntractive()
     M.setResesrveDay(static_cast<ReserveDay>(reserveDay));
 
     storage.addMeal(M);
+
+    json j;
+    j["name"] = name;
+    j["price"] = price;
+    j["mealType"] = mealType;
+    j["reserveDay"] = reserveDay;
+
+    name.append(".json");
+    ofstream fs(CP.j_meals / name, ios::out | ios::app);
+    if (fs.is_open())
+    {
+        fs << j;
+        fs.close();
+    }
+    else
+    {
+        ofstream log(CP.l_admins_log_file, ios::out | ios::app);
+        log << "Error! Can not open the " << CP.j_meals.string() << "\\" << name << " file" << endl;
+        log.close();
+    }
 }
 
 void AdminPanel::addNewDiningHallIntractive()
@@ -813,20 +827,6 @@ Transaction::Transaction()
     ID = ++nextID;
 }
 
-int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
-{
-    char x;
-    int a = 0;
-
-    while (x != 10)
-    {
-        x = getchar();
-        if (x >= '0' && x <= '9')
-            a = (a * 10) + (x - 48);
-    }
-    return a;
-}
-
 int main()
 {
     system("cls");
@@ -867,10 +867,24 @@ int main()
     ifstream fs(CP.d_admin_sessions / "admin.csv", ios::in);
     if (fs.is_open())
     {
-        fs >> email >> password >> name >> lastname;
+        getline(fs, line);
+        location = line.find(",");
+        email = line.substr(0, location);
+
+        line = line.substr(location + 1, line.length());
+        location = line.find(",");
+        password = line.substr(0, location);
+
+        line = line.substr(location + 1, line.length());
+        location = line.find(",");
+        name = line.substr(0, location);
+
+        line = line.substr(location + 1, line.length());
+        location = line.find(",");
+        lastname = line.substr(0, location);
+
         if (Entered_Email == email && Entered_Password == password)
         {
-            Is_Found = true;
             system("cls");
             cout << "Email And Password Found" << endl
                  << "sign in as Admin";
@@ -957,7 +971,7 @@ int main()
     else
     {
         ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
-        log << "Error! Can not open the " << CP.d_admin_sessions << "/admin.csv file";
+        log << "Error! Can not open the " << CP.d_admin_sessions << "\\admin.csv" << " file";
         log.close();
     }
     return 0;

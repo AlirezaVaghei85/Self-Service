@@ -10,6 +10,7 @@ class AdminPanel
 {
 private:
     Storage &storage = Storage::instance();
+    ConfigPaths &CP = ConfigPaths::instance();
 
 public:
     void chooseCsvFile(fs::path);
