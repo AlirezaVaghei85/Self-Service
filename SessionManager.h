@@ -43,6 +43,7 @@ namespace StudentSession
         Student currentStudent;
         ShoppingCart shopping_cart;
         int studentID;
+        ConfigPaths &CP = ConfigPaths::instance();
 
     public:
         // Student currentStudent();
@@ -57,6 +58,8 @@ namespace StudentSession
             static SessionManager instance;
             return instance;
         }
+
+        void setCurrentStudent(Student S) { currentStudent = S; };
 
         Student getCurrentStudent() { return currentStudent; }
         ShoppingCart getShoppingCart() { return shopping_cart; }

@@ -40,6 +40,8 @@ public:
     int getTransactionID() { return ID; }
     string getTrackingCode() { return trackingCode; }
     float getAmount() { return amount; }
+    TransactionType getType() { return type; }
+    TransactionStatus getStatus() { return status; }
 };
 
 int Transaction::nextID = 0;

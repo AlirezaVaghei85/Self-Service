@@ -95,10 +95,7 @@ void StudentSession::SessionManager::save_session()
 {
     string name = currentStudent.getStudentID();
     name.append(".txt");
-    string dir = "sessions/students/transactions/";
-    dir.append(name);
-    cout << dir << endl;
-    ofstream fs(dir, ios::out | ios::trunc);
+    ofstream fs(CP.t_student_transactions / name, ios::out | ios::trunc);
 
     if (fs.is_open())
     {
@@ -106,8 +103,8 @@ void StudentSession::SessionManager::save_session()
     }
     else
     {
-        ofstream log("logfile.log", ios::out | ios::app);
-        log << "Cannot open the " << dir << " file!";
+        ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions / name << " file!";
         log.close();
     }
 }
@@ -311,13 +308,12 @@ void Panel::showMenu()
 
 void Panel::Action(int key)
 {
-    char c;
     switch (key)
     {
     case 1:
         showStudentInfo();
         cout << endl
-             << "Enter any key to Continue";
+             << "Press Enter To Continue";
         getchar();
         break;
     case 2:
@@ -721,6 +717,26 @@ Transaction ShoppingCart::confirm()
     srand(time(0));
     long long int randomNumber = 100000000000 + (rand() % (99999900000000000));
     Trans.setTrackingCode(randomNumber);
+
+    string name = student.getStudentID();
+    name.append(".txt");
+    ofstream fs(CP.t_student_transactions / name, ios::out | ios::app);
+
+    if (fs.is_open())
+    {
+        fs << "ID: " << Trans.ID << endl
+           << "Tracking Code: " << Trans.getTrackingCode() << endl
+           << "Amount: " << Trans.getAmount() << endl
+           << "State: " << Trans.getStatus() << endl
+           << "Type: " << Trans.getType() << endl
+           << endl;
+    }
+    else
+    {
+        ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions / name << " file!";
+        log.close();
+    }
     return Trans;
 }
 
@@ -747,6 +763,7 @@ int main()
 {
     system("cls");
 
+    Student student;
     StudentSession::SessionManager &S = StudentSession::SessionManager::instance();
     AdminSession::SessionManager &A = AdminSession::SessionManager::instance();
     ConfigPaths &CP = ConfigPaths::instance();
@@ -852,12 +869,14 @@ int main()
                 if (Is_Found)
                 {
                     cout << "Login Successful!" << endl;
-                    S.getCurrentStudent().setUser_id(userID);
-                    S.getCurrentStudent().setStudentID(studentID);
-                    S.getCurrentStudent().setName(name);
-                    S.getCurrentStudent().setPhone(phone);
-                    S.getCurrentStudent().setEmail(email.c_str());
-                    S.getCurrentStudent().activate();
+                    student.setUser_id(userID);
+                    student.setStudentID(studentID);
+                    student.setName(name);
+                    student.setPhone(phone);
+                    student.setEmail(email.c_str());
+                    student.activate();
+                    student.setBalance(0);
+                    S.setCurrentStudent(student);
                     S.login();
                 }
                 else

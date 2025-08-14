@@ -11,6 +11,9 @@ class ShoppingCart
 private:
     static int nextID;
     vector<Reservation> reservations;
+    ConfigPaths &CP = ConfigPaths::instance();
+    StudentSession::SessionManager &CurrentStudent = StudentSession::SessionManager::instance();
+    Student student = CurrentStudent.getCurrentStudent();
 
 public:
     int ID;
