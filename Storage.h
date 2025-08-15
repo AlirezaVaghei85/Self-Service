@@ -13,10 +13,12 @@ private:
     int diningHallIDCounter = 1;
     vector<Meal> allMeals;
     vector<DiningHall> allDiningHalls;
+    ConfigPaths &CP = ConfigPaths::instance();
 
     Storage() = default;
 
 public:
+    void saveMeals();
     void displayAllMeals();
     void displayAllDininigHalls();
     void addMeal(Meal);
@@ -26,6 +28,7 @@ public:
     void MealActivation(int, bool);
     vector<Meal>::iterator findMeal(int);
     vector<DiningHall>::iterator findDiningHall(int);
+
     static Storage &instance()
     {
         static Storage instance;

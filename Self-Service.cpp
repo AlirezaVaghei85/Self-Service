@@ -226,6 +226,27 @@ void ConfigPaths::Creat_Directories()
     }
 }
 
+void Storage::saveMeals()
+{
+    json j;
+    ofstream file(CP.d_foodservice / "Meals.json", ios::out | ios::trunc);
+    if (file.is_open())
+    {
+        for (Meal M : allMeals)
+        {
+            j = M;
+            file << j;
+            file.close();
+        }
+    }
+    else
+    {
+        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions << "\\" << "Meals.json" << " file!";
+        log.close();
+    }
+}
+
 void Storage::displayAllMeals()
 {
     for (Meal &meal : allMeals)
@@ -318,10 +339,6 @@ Panel::Panel()
 {
     student = CurrentStudent.getCurrentStudent();
     reserves = student.getReserves();
-    // for (int i = 0; i < student.getReserves().size(); i++)
-    // {
-    //     reserves[i] = student.getReserves()[i];
-    // }
 }
 
 void Panel::showMenu()
