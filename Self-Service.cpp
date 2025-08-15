@@ -259,13 +259,30 @@ void Storage::saveMeals()
         {
             j = M;
             file << j;
-            file.close();
         }
+        file.close();
     }
     else
     {
         ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
         log << "Cannot open the " << CP.t_student_transactions << "\\" << "Meals.json" << " file!";
+        log.close();
+    }
+
+    file.open(CP.d_foodservice / "DiningHalls.json", ios::out | ios::trunc);
+    if (file.is_open())
+    {
+        for (DiningHall DH : allDiningHalls)
+        {
+            j = DH;
+            file << j;
+        }
+        file.close();
+    }
+    else
+    {
+        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions << "\\" << "DiningHalls.json" << " file!";
         log.close();
     }
 }
