@@ -43,11 +43,11 @@ public:
     void addSideItem(string s) { sideItems.push_back(s); }
     void addPrice(float p) { setPrice(price + p); }
 
-    int getMeal_id() { return mealID; }
-    string getName() { return name; }
-    float getPrice() { return price; }
-    MealType getMealType() { return mealType; }
-    ReserveDay getReserveDay() { return reserveday; }
+    int getMeal_id() const { return mealID; }
+    string getName() const { return name; }
+    float getPrice() const { return price; }
+    MealType getMealType() const { return mealType; }
+    ReserveDay getReserveDay() const { return reserveday; }
 
     void setMeal_id(int i) { mealID = i; }
     void setName(string n) { name = n; }

@@ -52,6 +52,31 @@ int GetInteger() // تابعی برای گرفتن فقظ مقادیر عددی
     return a;
 }
 
+namespace nlohmann // For saving objects on .json files
+{
+    template <>
+    struct adl_serializer<Meal>
+    {
+        static void to_json(json &j, const Meal &M)
+        {
+            j = json{
+                {"mealID", M.getMeal_id()},
+                {"name", M.getName()},
+                {"price", M.getPrice()},
+                {"mealType", M.getMealType()},
+                {"reserveday", M.getReserveDay()}};
+        }
+        static void from_json(const json &j, Meal &M)
+        {
+            M.setMeal_id(j.at("mealID").get<int>());
+            M.setName(j.at("name").get<string>());
+            M.setPrice(j.at("price").get<float>());
+            M.setMealType(j.at("mealType").get<MealType>());
+            M.setResesrveDay(j.at("reserveday").get<ReserveDay>());
+        }
+    };
+} // namespace nlohmann
+
 void AdminSession::SessionManager::sign_up()
 {
     string name;
@@ -571,6 +596,7 @@ void AdminPanel::addNewMealIntractive()
     string name;
     float price;
     int mealType, reserveDay;
+    bool activation;
 
     cout << "Enter Meal Name: ";
     cin >> name;
@@ -588,6 +614,13 @@ void AdminPanel::addNewMealIntractive()
     cin >> reserveDay;
     M.setResesrveDay(static_cast<ReserveDay>(reserveDay));
 
+    cout << "Activation (0: Deactivate, 1: Avtivate): ";
+    cin >> activation;
+    if (activation)
+        M.activate();
+    else
+        M.deactivate();
+
     storage.addMeal(M);
 
     json j;
@@ -595,6 +628,7 @@ void AdminPanel::addNewMealIntractive()
     j["price"] = price;
     j["mealType"] = mealType;
     j["reserveDay"] = reserveDay;
+    j["isActive"] = M.isActivate();
 
     name.append(".json");
     ofstream fs(CP.j_meals / name, ios::out | ios::app);

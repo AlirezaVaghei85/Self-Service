@@ -15,6 +15,7 @@ namespace AdminSession
         Admin currentAdmin;
         int adminID;
         ConfigPaths &CP = ConfigPaths::instance();
+        Storage &S = Storage::instance();
 
     public:
         // Admin currentAdmin();
