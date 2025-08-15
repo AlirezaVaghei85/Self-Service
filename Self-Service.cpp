@@ -268,8 +268,12 @@ void Storage::saveMeals()
         log << "Cannot open the " << CP.t_student_transactions << "\\" << "Meals.json" << " file!";
         log.close();
     }
+}
 
-    file.open(CP.d_foodservice / "DiningHalls.json", ios::out | ios::trunc);
+void Storage::saveDiningHalls()
+{
+    json j;
+    ofstream file(CP.d_foodservice / "DiningHalls.json", ios::out | ios::trunc);
     if (file.is_open())
     {
         for (DiningHall DH : allDiningHalls)

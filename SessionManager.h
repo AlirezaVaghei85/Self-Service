@@ -3,6 +3,7 @@
 #include <iostream>
 #include "SessionBase.h"
 #include "ConfigPaths.h"
+#include "Storage.h"
 #include "Admin.h"
 #include "Student.h"
 #include "ShoppingCart.h"
