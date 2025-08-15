@@ -77,6 +77,29 @@ namespace nlohmann // For saving objects on .json files
     };
 } // namespace nlohmann
 
+namespace nlohmann
+{
+    template <>
+    struct adl_serializer<DiningHall>
+    {
+        static void to_json(json &j, const DiningHall &DH)
+        {
+            j = json{
+                {"hallID", DH.getHall_id()},
+                {"name", DH.getName()},
+                {"address", DH.getAddress()},
+                {"capacity", DH.getCapacity()}};
+        }
+        static void from_json(const json &j, DiningHall &DH)
+        {
+            DH.setHall_id(j.at("hallID").get<int>());
+            DH.setName(j.at("name").get<string>());
+            DH.setAddress(j.at("address").get<string>());
+            DH.setCapacity(j.at("capacity").get<int>());
+        }
+    };
+} // namespace nlohmann
+
 void AdminSession::SessionManager::sign_up()
 {
     string name;

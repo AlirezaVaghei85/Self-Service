@@ -19,6 +19,7 @@ private:
 
 public:
     void saveMeals();
+    void saveDiningHalls();
     void displayAllMeals();
     void displayAllDininigHalls();
     void addMeal(Meal);

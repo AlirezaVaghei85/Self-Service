@@ -15,10 +15,10 @@ public:
     DiningHall() {}
     void print();
 
-    int getHall_id() { return hallID; }
-    string getName() { return name; }
-    string getAddress() { return address; }
-    int getCapacity() { return capacity; }
+    int getHall_id() const { return hallID; }
+    string getName() const { return name; }
+    string getAddress() const { return address; }
+    int getCapacity() const { return capacity; }
 
     void setHall_id(int i) { hallID = i; }
     void setName(string n) { name = n; }
