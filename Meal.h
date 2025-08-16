@@ -37,7 +37,6 @@ public:
     Meal() {}
     void print();
     bool cancel();
-    bool isActivate() { return isActive; }
     void activate() { isActive = true; }
     void deactivate() { isActive = false; }
     void addSideItem(string s) { sideItems.push_back(s); }
@@ -48,6 +47,7 @@ public:
     float getPrice() const { return price; }
     MealType getMealType() const { return mealType; }
     ReserveDay getReserveDay() const { return reserveday; }
+    bool isActivate() const { return isActive; }
 
     void setMeal_id(int i) { mealID = i; }
     void setName(string n) { name = n; }

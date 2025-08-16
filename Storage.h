@@ -9,8 +9,8 @@ using namespace std;
 class Storage
 {
 private:
-    int mealIDCounter = 1;
-    int diningHallIDCounter = 1;
+    int mealIDCounter = 0;
+    int diningHallIDCounter = 0;
     vector<Meal> allMeals;
     vector<DiningHall> allDiningHalls;
     ConfigPaths &CP = ConfigPaths::instance();
@@ -20,6 +20,7 @@ private:
 public:
     void saveMeals();
     void saveDiningHalls();
+    void load();
     void displayAllMeals();
     void displayAllDininigHalls();
     void addMeal(Meal);
@@ -29,6 +30,9 @@ public:
     void MealActivation(int, bool);
     vector<Meal>::iterator findMeal(int);
     vector<DiningHall>::iterator findDiningHall(int);
+
+    int getMealID() { return mealIDCounter; }
+    int getDiningHallID() { return diningHallIDCounter; }
 
     static Storage &instance()
     {

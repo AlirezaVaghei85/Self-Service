@@ -64,7 +64,8 @@ namespace nlohmann // For saving objects on .json files
                 {"name", M.getName()},
                 {"price", M.getPrice()},
                 {"mealType", M.getMealType()},
-                {"reserveday", M.getReserveDay()}};
+                {"reserveday", M.getReserveDay()},
+                {"isActive", M.isActivate()}};
         }
         static void from_json(const json &j, Meal &M)
         {
@@ -139,6 +140,7 @@ bool AdminSession::SessionManager::isThereAnyAdmin()
 void AdminSession::SessionManager::login()
 {
     load_session();
+    S.load();
     AdminPanel adminPanel;
     int choice;
     do
@@ -155,6 +157,7 @@ void AdminSession::SessionManager::login()
 void StudentSession::SessionManager::login()
 {
     load_session();
+    S.load();
     Panel StudentPanel;
     int choice;
     do
@@ -239,14 +242,6 @@ void ConfigPaths::Creat_Directories()
     {
         fs::create_directories(t_student_transactions);
     }
-    if (!fs::exists(j_meals))
-    {
-        fs::create_directories(j_meals);
-    }
-    if (!fs::exists(j_dininghalls))
-    {
-        fs::create_directories(j_dininghalls);
-    }
 }
 
 void Storage::saveMeals()
@@ -255,6 +250,8 @@ void Storage::saveMeals()
     ofstream file(CP.d_foodservice / "Meals.json", ios::out | ios::trunc);
     if (file.is_open())
     {
+        j["mealIDCounter"] = mealIDCounter;
+        file << j;
         for (Meal M : allMeals)
         {
             j = M;
@@ -276,10 +273,60 @@ void Storage::saveDiningHalls()
     ofstream file(CP.d_foodservice / "DiningHalls.json", ios::out | ios::trunc);
     if (file.is_open())
     {
+        j["diningHallIDCounter"] = diningHallIDCounter;
+        file << j;
         for (DiningHall DH : allDiningHalls)
         {
             j = DH;
             file << j;
+        }
+        file.close();
+    }
+    else
+    {
+        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions << "\\" << "DiningHalls.json" << " file!";
+        log.close();
+    }
+}
+
+void Storage::load()
+{
+    json j;
+    ifstream file(CP.d_foodservice / "Meals.json", ios::in);
+    if (file.is_open())
+    {
+        allMeals.clear();
+        file >> j;
+        mealIDCounter = j["mealIDCounter"];
+        Meal M;
+        for (int i = 0; i < mealIDCounter; i++)
+        {
+            file >> j;
+            j.get_to(M);
+            allMeals.push_back(M);
+        }
+        file.close();
+    }
+    else
+    {
+        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions << "\\" << "Meals.json" << " file!";
+        log.close();
+    }
+
+    file.open(CP.d_foodservice / "DiningHalls.json", ios::in);
+    if (file.is_open())
+    {
+        allDiningHalls.clear();
+        file >> j;
+        diningHallIDCounter = j["diningHallIDCounter"];
+        DiningHall DH;
+        for (int i = 0; i < diningHallIDCounter; i++)
+        {
+            file >> j;
+            j.get_to(DH);
+            allDiningHalls.push_back(DH);
         }
         file.close();
     }
@@ -310,13 +357,13 @@ void Storage::displayAllDininigHalls()
 
 void Storage::addMeal(Meal meal)
 {
-    meal.setMeal_id(mealIDCounter++);
+    meal.setMeal_id(++mealIDCounter);
     allMeals.push_back(meal);
 }
 
 void Storage::addDiningHall(DiningHall dhall)
 {
-    dhall.setHall_id(diningHallIDCounter++);
+    dhall.setHall_id(++diningHallIDCounter);
     allDiningHalls.push_back(dhall);
 }
 
@@ -355,7 +402,7 @@ vector<Meal>::iterator Storage::findMeal(int mealID)
 {
     vector<Meal>::iterator meal;
 
-    for (meal = allMeals.begin(); meal == allMeals.end() - 1; ++meal)
+    for (meal = allMeals.begin(); meal != allMeals.end(); ++meal)
     {
         if (meal->getMeal_id() == mealID)
         {
@@ -363,13 +410,22 @@ vector<Meal>::iterator Storage::findMeal(int mealID)
             break;
         }
     }
+
+    // for (meal = allMeals.begin(); meal == allMeals.end() - 1; ++meal)
+    // {
+    //     if (meal->getMeal_id() == mealID)
+    //     {
+    //         return meal;
+    //         break;
+    //     }
+    // }
 }
 
 vector<DiningHall>::iterator Storage::findDiningHall(int hallID)
 {
     vector<DiningHall>::iterator DHall;
 
-    for (DHall = allDiningHalls.begin(); DHall == allDiningHalls.end() - 1; ++DHall)
+    for (DHall = allDiningHalls.begin(); DHall != allDiningHalls.end(); ++DHall)
     {
         if (DHall->getHall_id() == hallID)
         {
@@ -422,6 +478,10 @@ void Panel::Action(int key)
         break;
     case 5:
         addToShoppingCart();
+        cout << "Reservation Successfuly Added To Shopping Cart.";
+        cout << endl
+             << "Press Enter To Continue";
+        getchar();
         break;
     case 6:
         confirmShoppingCart();
@@ -471,6 +531,33 @@ void Panel::viewReservations()
 void Panel::viewShoppingCart()
 {
     shoppingcart.viewShoppingCartItems();
+}
+
+void Panel::addToShoppingCart()
+{
+    cout << "Choose A Meal: " << endl;
+    S.displayAllMeals();
+    cout << "Enter Meal ID: ";
+    int i;
+    cin >> i;
+    vector<Meal>::iterator meal = S.findMeal(i);
+    student.reserve_meal(*meal);
+    if (meal->isActivate())
+    {
+        system("cls");
+        cout << "Choose A Dining Hall: " << endl;
+        S.displayAllDininigHalls();
+        cout << "Enter Dining Hall ID: ";
+        int i;
+        cin >> i;
+        vector<DiningHall>::iterator dhall = S.findDiningHall(i);
+        Reservation R(++ReservationIDCounter, &student, &(*meal), &(*dhall), Success);
+        shoppingcart.addReservation(R);
+    }
+    else
+    {
+        cout << "\nThis Meal Is Not Active!";
+    }
 }
 
 void Panel::confirmShoppingCart()
@@ -551,14 +638,14 @@ void Panel::increaseBalance()
 void AdminPanel::showMenu()
 {
     system("cls");
-    cout << "\n1.Choose Csv File."
-         << "\n2.Display All Meals."
-         << "\n3.Display All DininigHalls"
-         << "\n4.Add New Meal Intractive"
-         << "\n5.Add New DiningHall Intractive"
-         << "\n6.Remove Meal"
-         << "\n7.Meal Acitvation"
-         << "\n8.Remove DiningHall"
+    cout << "\n1. Choose Csv File."
+         << "\n2. Display All Meals."
+         << "\n3. Display All DininigHalls"
+         << "\n4. Add New Meal Intractive"
+         << "\n5. Add New DiningHall Intractive"
+         << "\n6. Remove Meal"
+         << "\n7. Meal Acitvation"
+         << "\n8. Remove DiningHall"
          << "\n9. Exit";
 }
 
@@ -660,7 +747,7 @@ void AdminPanel::addNewMealIntractive()
     bool activation;
 
     cout << "Enter Meal Name: ";
-    cin >> name;
+    getline(cin, name);
     M.setName(name);
 
     cout << "Enter Meal Price: ";
@@ -684,26 +771,7 @@ void AdminPanel::addNewMealIntractive()
 
     storage.addMeal(M);
 
-    json j;
-    j["name"] = name;
-    j["price"] = price;
-    j["mealType"] = mealType;
-    j["reserveDay"] = reserveDay;
-    j["isActive"] = M.isActivate();
-
-    name.append(".json");
-    ofstream fs(CP.j_meals / name, ios::out | ios::app);
-    if (fs.is_open())
-    {
-        fs << j;
-        fs.close();
-    }
-    else
-    {
-        ofstream log(CP.l_admins_log_file, ios::out | ios::app);
-        log << "Error! Can not open the " << CP.j_meals.string() << "\\" << name << " file" << endl;
-        log.close();
-    }
+    storage.saveMeals();
 }
 
 void AdminPanel::addNewDiningHallIntractive()
@@ -713,11 +781,11 @@ void AdminPanel::addNewDiningHallIntractive()
     int capacity;
 
     cout << "Enter Dining Hall Name: ";
-    cin >> name;
+    getline(cin, name);
     DH.setName(name);
 
     cout << "Enter Dining Hall Address: ";
-    cin >> address;
+    getline(cin, address);
     DH.setAddress(address);
 
     cout << "Enter Dining Hall Capacity: ";
@@ -726,39 +794,25 @@ void AdminPanel::addNewDiningHallIntractive()
 
     storage.addDiningHall(DH);
 
-    json j;
-    j["name"] = name;
-    j["address"] = address;
-    j["capacity"] = capacity;
-
-    name.append(".json");
-    ofstream fs(CP.j_dininghalls / name, ios::out | ios::app);
-    if (fs.is_open())
-    {
-        fs << j;
-        fs.close();
-    }
-    else
-    {
-        ofstream log(CP.l_admins_log_file, ios::out | ios::app);
-        log << "Error! Can not open the " << CP.j_meals.string() << "\\" << name << " file" << endl;
-        log.close();
-    }
+    storage.saveDiningHalls();
 }
 
 void AdminPanel::removeMeal(int mealID)
 {
     storage.removeMeal(mealID);
+    storage.saveMeals();
 }
 
 void AdminPanel::mealAcitvation(int mealID, bool activate)
 {
     storage.MealActivation(mealID, activate);
+    storage.saveMeals();
 }
 
 void AdminPanel::removeDiningHall(int hallID)
 {
     storage.removeDiningHall(hallID);
+    storage.saveDiningHalls();
 }
 
 void User::print() const
@@ -817,7 +871,6 @@ void Student::print() const
 
 void Student::reserve_meal(Meal M)
 {
-    balance -= M.getPrice();
 }
 
 bool Student::cancel_reservation(Reservation *R)

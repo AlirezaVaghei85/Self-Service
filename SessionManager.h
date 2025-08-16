@@ -48,6 +48,7 @@ namespace StudentSession
         ShoppingCart *shopping_cart;
         int studentID;
         ConfigPaths &CP = ConfigPaths::instance();
+        Storage &S = Storage::instance();
 
     public:
         // Student currentStudent();
