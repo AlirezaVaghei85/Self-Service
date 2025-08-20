@@ -11,6 +11,7 @@ class Storage
 private:
     int mealIDCounter = 0;
     int diningHallIDCounter = 0;
+    int ReservationIDCounter;
     vector<Meal> allMeals;
     vector<DiningHall> allDiningHalls;
     ConfigPaths &CP = ConfigPaths::instance();
@@ -30,6 +31,8 @@ public:
     void MealActivation(int, bool);
     vector<Meal>::iterator findMeal(int);
     vector<DiningHall>::iterator findDiningHall(int);
+
+    void setReservationIDCounter(int i) { ReservationIDCounter = i; }
 
     int getMealID() { return mealIDCounter; }
     int getDiningHallID() { return diningHallIDCounter; }

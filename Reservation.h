@@ -23,22 +23,27 @@ class Reservation
 private:
     int reservationID;
     Student *student;
-    DiningHall *dHall;
-    Meal *meal;
+    DiningHall dHall;
+    Meal meal;
     RStatus status;
     time_t createdAT;
 
 public:
-    Reservation(int ID, Student *S, Meal *M, DiningHall *DH, RStatus RST);
+    Reservation() {}
+    Reservation(int ID, Student *S, Meal M, DiningHall DH, RStatus RST);
     void print() const;
     bool cancel();
 
-    int getReservation_id() { return reservationID; }
-    Meal getMeal() { return *meal; }
-    RStatus getStatus() { return status; }
+    int getReservation_id() const { return reservationID; }
+    RStatus getStatus() const { return status; }
+    Meal getMeal() const { return meal; }
+    DiningHall getDiningHall() const { return dHall; }
 
     void setReservation_id(int i) { reservationID = i; }
     void setStatus(RStatus R) { status = R; }
+    void setStudent(Student *S) { student = S; }
+    void setMeal(Meal M) { meal = M; }
+    void setDiningHall(DiningHall DH) { dHall = DH; }
 };
 
 #endif

@@ -35,7 +35,7 @@ private:
 
 public:
     Meal() {}
-    void print();
+    void print() const;
     bool cancel();
     void activate() { isActive = true; }
     void deactivate() { isActive = false; }
@@ -54,6 +54,7 @@ public:
     void setPrice(float p) { price = p; }
     void setMealType(MealType m) { mealType = m; }
     void setResesrveDay(ReserveDay r) { reserveday = r; }
+    void setActive(bool B) { isActive = B; }
 };
 
 #endif

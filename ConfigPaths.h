@@ -19,8 +19,8 @@ public:
     fs::path d_config = d_data / "Config";
     fs::path d_foodservice = d_data / "Food Service";
     fs::path d_sessions = d_data / "Sessions";
-    fs::path d_student_sessions = d_data / "Sessions/Students";
-    fs::path d_admin_sessions = d_data / "Sessions/Admins";
+    fs::path d_student_sessions = d_data / "Sessions" / "Students";
+    fs::path d_admin_sessions = d_data / "Sessions" / "Admin";
     fs::path j_admin_config = d_config / "Admin Config";
     fs::path j_ConfigPaths = d_config / "Config Paths";
     fs::path j_meals = d_foodservice / "Meals";

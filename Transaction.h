@@ -31,7 +31,7 @@ public:
     Transaction();
 
     void setTransactionID(int i) { ID = i; }
-    void setTrackingCode(int i) { trackingCode = i; }
+    void setTrackingCode(string s) { trackingCode = s; }
     void setAmount(int i) { amount = i; }
     void setType(TransactionType t) { type = t; }
     void setStatus(TransactionStatus s) { status = s; }

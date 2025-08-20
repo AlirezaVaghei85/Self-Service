@@ -17,7 +17,7 @@ private:
     ConfigPaths &CP = ConfigPaths::instance();
     Storage &S = Storage::instance();
     Student student;
-    vector<Reservation *> reserves;
+    vector<Reservation> reserves;
     ShoppingCart shoppingcart;
     int ReservationIDCounter = 0;
 
@@ -33,9 +33,11 @@ public:
     void confirmShoppingCart();
     void removeShoppingCartItem();
     void increaseBalance();
-    void viewRecentTransactions() {}
+    void viewRecentTransactions();
     void cancelReservation(int) {}
-    void exit() {}
+    void exit();
+
+    void loadReserves();
 };
 
 #endif

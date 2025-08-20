@@ -13,7 +13,7 @@ private:
 
 public:
     DiningHall() {}
-    void print();
+    void print() const;
 
     int getHall_id() const { return hallID; }
     string getName() const { return name; }

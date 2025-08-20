@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <conio.h>
 #include <ctime>
 #include <fstream>
 #include <filesystem>
@@ -74,6 +75,7 @@ namespace nlohmann // For saving objects on .json files
             M.setPrice(j.at("price").get<float>());
             M.setMealType(j.at("mealType").get<MealType>());
             M.setResesrveDay(j.at("reserveday").get<ReserveDay>());
+            M.setActive(j.at("isActive").get<bool>());
         }
     };
 } // namespace nlohmann
@@ -101,6 +103,25 @@ namespace nlohmann
     };
 } // namespace nlohmann
 
+namespace nlohmann
+{
+    template <>
+    struct adl_serializer<Reservation>
+    {
+        static void to_json(json &j, const Reservation &R)
+        {
+            j = json{
+                {"reservationID", R.getReservation_id()},
+                {"status", R.getStatus()}};
+        }
+        static void from_json(const json &j, Reservation &R)
+        {
+            R.setReservation_id(j.at("reservationID").get<int>());
+            R.setStatus(j.at("status").get<RStatus>());
+        }
+    };
+} // namespace nlohmann
+
 void AdminSession::SessionManager::sign_up()
 {
     string name;
@@ -123,7 +144,7 @@ void AdminSession::SessionManager::sign_up()
     }
     else
     {
-        ofstream log(CP.l_admins_log_file, ios::out | ios::app);
+        ofstream log(CP.d_logs, ios::out | ios::app);
         log << "Error! Can not open the " << CP.d_admin_sessions << "\\admin.csv" << " file";
         log.close();
     }
@@ -159,6 +180,7 @@ void StudentSession::SessionManager::login()
     load_session();
     S.load();
     Panel StudentPanel;
+    StudentPanel.loadReserves();
     int choice;
     do
     {
@@ -174,28 +196,11 @@ void StudentSession::SessionManager::login()
 
 void StudentSession::SessionManager::save_session()
 {
-    string name = currentStudent.getStudentID();
-    name.append(".txt");
-    ofstream fs(CP.t_student_transactions / name, ios::out | ios::trunc);
-
-    if (fs.is_open())
-    {
-        // fs <<
-    }
-    else
-    {
-        ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
-        log << "Cannot open the " << CP.t_student_transactions << "\\" << name << " file!";
-        log.close();
-    }
 }
 
 fs::path ConfigPaths::j_reservations(Student *student)
 {
-    string name = student->getStudentID();
-    name.append(".json");
     string dir = "sessions/students/reservations/";
-    dir.append(name);
     if (!fs::exists(dir))
     {
         fs::create_directories(dir);
@@ -261,7 +266,7 @@ void Storage::saveMeals()
     }
     else
     {
-        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
         log << "Cannot open the " << CP.t_student_transactions << "\\" << "Meals.json" << " file!";
         log.close();
     }
@@ -284,7 +289,7 @@ void Storage::saveDiningHalls()
     }
     else
     {
-        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
         log << "Cannot open the " << CP.t_student_transactions << "\\" << "DiningHalls.json" << " file!";
         log.close();
     }
@@ -310,7 +315,7 @@ void Storage::load()
     }
     else
     {
-        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
         log << "Cannot open the " << CP.t_student_transactions << "\\" << "Meals.json" << " file!";
         log.close();
     }
@@ -332,8 +337,8 @@ void Storage::load()
     }
     else
     {
-        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
-        log << "Cannot open the " << CP.t_student_transactions << "\\" << "DiningHalls.json" << " file!";
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions.string() << "\\" << "DiningHalls.json" << " file!";
         log.close();
     }
 }
@@ -352,6 +357,7 @@ void Storage::displayAllDininigHalls()
     for (DiningHall &hall : allDiningHalls)
     {
         hall.print();
+        cout << endl;
     }
 }
 
@@ -410,15 +416,6 @@ vector<Meal>::iterator Storage::findMeal(int mealID)
             break;
         }
     }
-
-    // for (meal = allMeals.begin(); meal == allMeals.end() - 1; ++meal)
-    // {
-    //     if (meal->getMeal_id() == mealID)
-    //     {
-    //         return meal;
-    //         break;
-    //     }
-    // }
 }
 
 vector<DiningHall>::iterator Storage::findDiningHall(int hallID)
@@ -464,24 +461,37 @@ void Panel::Action(int key)
     case 1:
         showStudentInfo();
         cout << endl
+             << endl
              << "Press Enter To Continue";
-        getchar();
+        getch();
         break;
     case 2:
         checkBalance();
+        cout << endl
+             << endl
+             << "Press Enter To Continue";
+        getch();
         break;
     case 3:
         viewReservations();
+        cout << endl
+             << endl
+             << "Press Enter To Continue";
+        getch();
         break;
     case 4:
         viewShoppingCart();
+        cout << endl
+             << endl
+             << "Press Enter To Continue";
+        getch();
         break;
     case 5:
         addToShoppingCart();
-        cout << "Reservation Successfuly Added To Shopping Cart.";
         cout << endl
+             << endl
              << "Press Enter To Continue";
-        getchar();
+        getch();
         break;
     case 6:
         confirmShoppingCart();
@@ -494,6 +504,10 @@ void Panel::Action(int key)
         break;
     case 9:
         viewRecentTransactions();
+        cout << endl
+             << endl
+             << "Press Enter To Continue";
+        getch();
         break;
     case 10:
         cout << "Choose a Reservatoin: " << endl;
@@ -522,9 +536,11 @@ void Panel::checkBalance()
 
 void Panel::viewReservations()
 {
-    for (Reservation *R : reserves)
+    for (Reservation R : reserves)
     {
-        R->print();
+        R.print();
+        cout << endl
+             << endl;
     }
 }
 
@@ -551,8 +567,10 @@ void Panel::addToShoppingCart()
         int i;
         cin >> i;
         vector<DiningHall>::iterator dhall = S.findDiningHall(i);
-        Reservation R(++ReservationIDCounter, &student, &(*meal), &(*dhall), Success);
+        Reservation R(++ReservationIDCounter, &student, *meal, *dhall, Success);
+        S.setReservationIDCounter(ReservationIDCounter);
         shoppingcart.addReservation(R);
+        cout << "Reservation Successfuly Added To Shopping Cart.";
     }
     else
     {
@@ -572,8 +590,8 @@ void Panel::confirmShoppingCart()
         fs << "ID: " << Trans.ID << endl
            << "Tracking Code: " << Trans.getTrackingCode() << endl
            << "Amount: " << Trans.getAmount() << endl
-           << "State: " << Trans.getStatus() << endl
-           << "Type: " << Trans.getType() << endl
+           << "State: " << "PENDING" << endl
+           << "Type: " << "PAYMENT" << endl
            << endl;
         if (student.getBalance() >= Trans.getAmount())
         {
@@ -587,9 +605,12 @@ void Panel::confirmShoppingCart()
             fs << "ID: " << Trans.ID << endl
                << "Tracking Code: " << Trans.getTrackingCode() << endl
                << "Amount: " << Trans.getAmount() << endl
-               << "State: " << Trans.getStatus() << endl
-               << "Type: " << Trans.getType() << endl
+               << "State: " << "COMPLETED" << endl
+               << "Type: " << "PAYMENT" << endl
                << endl;
+
+            reserves = shoppingcart.getReservations();
+            shoppingcart.clear();
         }
         else
         {
@@ -604,14 +625,14 @@ void Panel::confirmShoppingCart()
             fs << "ID: " << Trans.ID << endl
                << "Tracking Code: " << Trans.getTrackingCode() << endl
                << "Amount: " << Trans.getAmount() << endl
-               << "State: " << Trans.getStatus() << endl
-               << "Type: " << Trans.getType() << endl
+               << "State: " << "FAILED" << endl
+               << "Type: " << "PAYMENT" << endl
                << endl;
         }
     }
     else
     {
-        ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
         log << "Cannot open the " << CP.t_student_transactions << "\\" << name << " file!";
         log.close();
     }
@@ -633,6 +654,91 @@ void Panel::increaseBalance()
     cout << "Enter The Balance You Need To Increase: ";
     cin >> i;
     student.setBalance(student.getBalance() + i);
+}
+
+void Panel::viewRecentTransactions()
+{
+    string name = student.getStudentID();
+    name.append(".txt");
+    ifstream file(CP.t_student_transactions / name, ios::in);
+    if (file.is_open())
+    {
+        string line;
+        while (getline(file, line))
+            cout << line << endl;
+    }
+    else
+    {
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.t_student_transactions.string() << "\\" << name << " file!" << endl;
+        log.close();
+    }
+}
+
+void Panel::exit()
+{
+    json j;
+    string name = student.getStudentID();
+    name.append(".json");
+    ofstream file(CP.j_reservations() / name, ios::out | ios::trunc);
+    if (file.is_open())
+    {
+        j["ReservationIDCounter"] = ReservationIDCounter;
+        file << j;
+        for (Reservation R : reserves)
+        {
+            j = R;
+            file << j;
+            j = R.getMeal();
+            file << j;
+            j = R.getDiningHall();
+            file << j;
+        }
+        file.close();
+    }
+    else
+    {
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.j_reservations() << "\\" << name << " file!";
+        log.close();
+    }
+}
+
+void Panel::loadReserves()
+{
+    json j;
+    string name = student.getStudentID();
+    name.append(".json");
+    ifstream file(CP.j_reservations() / name, ios::in);
+    if (file.is_open())
+    {
+        reserves.clear();
+        file >> j;
+        ReservationIDCounter = j["ReservationIDCounter"];
+        Reservation R;
+        Meal M;
+        DiningHall DH;
+        for (int i = 0; i < ReservationIDCounter; i++)
+        {
+            file >> j;
+            j.get_to(R);
+            file >> j;
+            j.get_to(M);
+            R.setMeal(M);
+            file >> j;
+            j.get_to(DH);
+            R.setDiningHall(DH);
+            R.setStudent(&student);
+            reserves.push_back(R);
+        }
+        file.close();
+    }
+    else
+    {
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
+        log << "Cannot open the " << CP.j_reservations() << "\\" << name << " file!";
+        log.close();
+    }
 }
 
 void AdminPanel::showMenu()
@@ -663,14 +769,16 @@ void AdminPanel::action(int key)
     case 2:
         displayAllMeals();
         cout << endl
+             << endl
              << "Press Enter To Continue";
-        getchar();
+        getch();
         break;
     case 3:
         displayAllDininigHalls();
         cout << endl
+             << endl
              << "Press Enter To Continue";
-        getchar();
+        getch();
         break;
     case 4:
         addNewMealIntractive();
@@ -722,7 +830,7 @@ void AdminPanel::chooseCsvFile(fs::path path)
     }
     else
     {
-        ofstream log("logfile.log", ios::out | ios::app);
+        ofstream log("Students.log", ios::out | ios::app);
         log << "Error! Can not open the " << path.string() << " file";
         log.close();
     }
@@ -823,7 +931,7 @@ void User::print() const
          << "\nHashed Password: " << hashedPassword;
 }
 
-void Meal::print()
+void Meal::print() const
 {
     cout << "\nMeal ID: " << mealID
          << "\nMeal Name: " << name
@@ -843,6 +951,38 @@ void Meal::print()
     default:
         break;
     }
+    cout << "\nReserve Day: ";
+    switch (reserveday)
+    {
+    case Saturday:
+        cout << "Saturday";
+        break;
+    case Sunday:
+        cout << "Sunday";
+        break;
+    case Monday:
+        cout << "Monday";
+        break;
+    case Tueseday:
+        cout << "Tueseday";
+        break;
+    case Wednesday:
+        cout << "Wednesday";
+        break;
+    case Thursday:
+        cout << "Thursday";
+        break;
+    case Friday:
+        cout << "Friday";
+        break;
+    default:
+        break;
+    }
+    cout << "\nActivation: ";
+    if (isActive)
+        cout << "True";
+    else
+        cout << "False";
 }
 
 bool Meal::cancel()
@@ -851,7 +991,7 @@ bool Meal::cancel()
     return true;
 }
 
-void DiningHall::print()
+void DiningHall::print() const
 {
     cout << "\nDining Hall ID: " << hallID
          << "\nDining Hall Name: " << name
@@ -866,7 +1006,11 @@ void Student::print() const
          << "\nName: " << name
          << "\nEmail: " << email
          << "\nBalance: " << balance
-         << "\nActivate: " << isActive;
+         << "\nActivate: ";
+    if (isActive)
+        cout << "True";
+    else
+        cout << "False";
 }
 
 void Student::reserve_meal(Meal M)
@@ -894,7 +1038,7 @@ void Student::setEmail(string Entered_Email)
         cout << "INVALID EMAIL!";
 }
 
-Reservation::Reservation(int ID, Student *S, Meal *M, DiningHall *DH, RStatus RST)
+Reservation::Reservation(int ID, Student *S, Meal M, DiningHall DH, RStatus RST)
 {
     setReservation_id(ID);
     student = S;
@@ -921,12 +1065,10 @@ void Reservation::print() const
     default:
         break;
     }
-    cout << "\nStudent Information: ";
-    student->print();
-    cout << "\nMeal information: ";
-    meal->print();
-    cout << "\nDining Hall Information: ";
-    dHall->print();
+    cout << "\n\nMeal information: ";
+    meal.print();
+    cout << "\n\nDining Hall Information: ";
+    dHall.print();
 }
 
 bool Reservation::cancel()
@@ -957,6 +1099,8 @@ void ShoppingCart::viewShoppingCartItems()
     for (int i = 0; i < size; i++)
     {
         reservations[i].print();
+        cout << endl
+             << endl;
     }
 }
 
@@ -985,7 +1129,7 @@ Transaction ShoppingCart::confirm()
     Trans.setTime(currentTime);
     srand(time(0));
     long long int randomNumber = 100000000000 + (rand() % (99999900000000000));
-    Trans.setTrackingCode(randomNumber);
+    Trans.setTrackingCode(to_string(randomNumber));
     return Trans;
 }
 
@@ -1128,7 +1272,7 @@ int main()
             } // end of if
             else
             {
-                ofstream log(CP.l_students_log_file / "logfile.log", ios::out | ios::app);
+                ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
                 log << "Error! Can not open the studentsCsvFile.csv file";
                 log.close();
             }
@@ -1137,8 +1281,8 @@ int main()
     }
     else
     {
-        ofstream log(CP.l_admins_log_file / "logfile.log", ios::out | ios::app);
-        log << "Error! Can not open the " << CP.d_admin_sessions << "\\admin.csv" << " file";
+        ofstream log(CP.d_logs / "Students.log", ios::out | ios::app);
+        log << "Error! Can not open the " << CP.d_admin_sessions.string() << "\\admin.csv" << " file";
         log.close();
     }
     return 0;
