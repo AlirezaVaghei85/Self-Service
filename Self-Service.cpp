@@ -196,6 +196,20 @@ void StudentSession::SessionManager::login()
 
 void StudentSession::SessionManager::save_session()
 {
+    string name = currentStudent.getStudentID();
+    name.append(".txt");
+    ofstream file(CP.d_student_sessions / name, ios::out | ios::trunc);
+    file << currentStudent.getBalance();
+}
+
+void StudentSession::SessionManager::load_session()
+{
+    int Balance;
+    string name = currentStudent.getStudentID();
+    name.append(".txt");
+    ifstream file(CP.d_student_sessions / name, ios::in);
+    file >> Balance;
+    currentStudent.setBalance(Balance);
 }
 
 fs::path ConfigPaths::j_reservations(Student *student)
@@ -375,6 +389,7 @@ void Storage::addDiningHall(DiningHall dhall)
 
 void Storage::removeMeal(int mealID)
 {
+    mealIDCounter--;
     for (int i = 0; i < allMeals.size(); i++)
     {
         if (allMeals[i].getMeal_id() == mealID)
@@ -386,6 +401,7 @@ void Storage::removeMeal(int mealID)
 
 void Storage::removeDiningHall(int hallID)
 {
+    diningHallIDCounter--;
     for (int i = 0; i < allDiningHalls.size(); i++)
     {
         if (allDiningHalls[i].getHall_id() == hallID)
@@ -501,6 +517,7 @@ void Panel::Action(int key)
         break;
     case 8:
         increaseBalance();
+        getch();
         break;
     case 9:
         viewRecentTransactions();
@@ -650,10 +667,61 @@ void Panel::removeShoppingCartItem()
 
 void Panel::increaseBalance()
 {
-    float i;
+    string name = student.getStudentID();
+    name.append(".txt");
+    ofstream file(CP.t_student_transactions / name, ios::out | ios::app);
+
+    int Balance;
+    long long int CNumber;
     cout << "Enter The Balance You Need To Increase: ";
-    cin >> i;
-    student.setBalance(student.getBalance() + i);
+    cin >> Balance;
+
+    Transaction Trans;
+    Trans.setStatus(PENDING);
+    Trans.setType(PAYMENT);
+    Trans.setAmount(Balance);
+    time_t currentTime = time(NULL);
+    Trans.setTime(currentTime);
+    srand(time(0));
+    long long int randomNumber = 100000000000 + (rand() % (900000000000));
+    Trans.setTrackingCode(to_string(randomNumber));
+
+    if (file.is_open())
+    {
+        file << "ID: " << Trans.ID << endl
+             << "Tracking Code: " << Trans.getTrackingCode() << endl
+             << "Amount: " << Trans.getAmount() << endl
+             << "State: " << "PENDING" << endl
+             << "Type: " << "PAYMENT" << endl
+             << endl;
+
+        cout << "Enter Your Cart Number: ";
+        cin >> CNumber;
+        if (CNumber >= 1000000000000000 && CNumber <= 9999999999999999)
+        {
+            student.setBalance(student.getBalance() + Balance);
+            cout << "Your Balance Increased";
+
+            file << "ID: " << Trans.ID << endl
+                 << "Tracking Code: " << Trans.getTrackingCode() << endl
+                 << "Amount: " << Trans.getAmount() << endl
+                 << "State: " << "COMPLETED" << endl
+                 << "Type: " << "PAYMENT" << endl
+                 << endl;
+        }
+        else
+        {
+            cout << "Error" << endl
+                 << "Enter A Valid Cert Number";
+
+            file << "ID: " << Trans.ID << endl
+                 << "Tracking Code: " << Trans.getTrackingCode() << endl
+                 << "Amount: " << Trans.getAmount() << endl
+                 << "State: " << "FAILED" << endl
+                 << "Type: " << "PAYMENT" << endl
+                 << endl;
+        }
+    }
 }
 
 void Panel::viewRecentTransactions()
@@ -787,12 +855,14 @@ void AdminPanel::action(int key)
         addNewDiningHallIntractive();
         break;
     case 6:
-        cout << "Enter The Meal ID: ";
+        storage.displayAllMeals();
+        cout << "\nEnter The Meal ID: ";
         cin >> x;
         removeMeal(x);
         break;
     case 7:
-        cout << "Enter The Meal ID: ";
+        storage.displayAllMeals();
+        cout << "\nEnter The Meal ID: ";
         cin >> x;
         cout << "Choose One:(True/False) ";
         bool answer;
@@ -800,7 +870,8 @@ void AdminPanel::action(int key)
         mealAcitvation(x, answer);
         break;
     case 8:
-        cout << "Enter The Dining Hall ID: ";
+        storage.displayAllDininigHalls();
+        cout << "\nEnter The Dining Hall ID: ";
         cin >> x;
         removeDiningHall(x);
         break;
@@ -1128,7 +1199,7 @@ Transaction ShoppingCart::confirm()
     time_t currentTime = time(NULL);
     Trans.setTime(currentTime);
     srand(time(0));
-    long long int randomNumber = 100000000000 + (rand() % (99999900000000000));
+    long long int randomNumber = 100000000000 + (rand() % (900000000000));
     Trans.setTrackingCode(to_string(randomNumber));
     return Trans;
 }
@@ -1214,7 +1285,7 @@ int main()
                 line = " ";
                 getline(fs, line);
 
-                while (getline(fs, line) || !Is_Found)
+                while (getline(fs, line))
                 {
                     fs >> userID;
 

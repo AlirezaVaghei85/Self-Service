@@ -53,7 +53,7 @@ namespace StudentSession
     public:
         // Student currentStudent();
         // ShoppingCart shoppingCart();
-        void load_session() override {}
+        void load_session() override;
         void save_session() override;
         void login() override;
         void logout() override {}
