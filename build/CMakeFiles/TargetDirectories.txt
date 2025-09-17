@@ -1,3 +1,0 @@
-E:/programming/C++/pishrafteh/Self-Service/build/CMakeFiles/Hashing_Password.dir
-E:/programming/C++/pishrafteh/Self-Service/build/CMakeFiles/edit_cache.dir
-E:/programming/C++/pishrafteh/Self-Service/build/CMakeFiles/rebuild_cache.dir

@@ -1,8 +1,0 @@
-[
-{
-  "directory": "E:/programming/C++/pishrafteh/Self-Service/build",
-  "command": "C:\\PROGRA~1\\CODEBL~1\\MinGW\\bin\\G__~1.EXE  @CMakeFiles/Hashing_Password.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\Hashing_Password.dir\\Self-Service.cpp.obj -c E:\\programming\\C++\\pishrafteh\\Self-Service\\Self-Service.cpp",
-  "file": "E:/programming/C++/pishrafteh/Self-Service/Self-Service.cpp",
-  "output": "CMakeFiles/Hashing_Password.dir/Self-Service.cpp.obj"
-}
-]
