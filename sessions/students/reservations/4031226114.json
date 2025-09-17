@@ -1,0 +1,18 @@
+{
+    "ReservationIDCounter": 2
+}{
+    "reservationID": 1,
+    "status": 0
+}{
+    "isActive": true,
+    "mealID": 1,
+    "mealType": 1,
+    "name": "Chicken Rice",
+    "price": 15000.0,
+    "reserveday": 0
+}{
+    "address": "Birjand Univercity",
+    "capacity": 1000,
+    "hallID": 1,
+    "name": "Pardis Shokat"
+}

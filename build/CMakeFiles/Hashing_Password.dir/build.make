@@ -95,7 +95,6 @@ Hashing_Password_EXTERNAL_OBJECTS =
 
 Hashing_Password.exe: CMakeFiles/Hashing_Password.dir/Self-Service.cpp.obj
 Hashing_Password.exe: CMakeFiles/Hashing_Password.dir/build.make
-Hashing_Password.exe: E:/programming/C++/pishrafteh/Self-Service/libbcrypt.a
 Hashing_Password.exe: CMakeFiles/Hashing_Password.dir/linkLibs.rsp
 Hashing_Password.exe: CMakeFiles/Hashing_Password.dir/objects1.rsp
 Hashing_Password.exe: CMakeFiles/Hashing_Password.dir/link.txt

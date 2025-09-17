@@ -1,0 +1,13 @@
+{
+    "diningHallIDCounter": 2
+}{
+    "address": "Birjand Univercity",
+    "capacity": 1000,
+    "hallID": 1,
+    "name": "Pardis Shokat"
+}{
+    "address": "Keshavarzy Univercity",
+    "capacity": 500,
+    "hallID": 2,
+    "name": "Keshavarzi"
+}
